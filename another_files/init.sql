@@ -4,7 +4,6 @@ use chats;
 
 create table user (
                       id bigint not null auto_increment,
-                      name varchar(128),
                       avatar varchar(512),
                       vk_id varchar(64),
                       info text,
