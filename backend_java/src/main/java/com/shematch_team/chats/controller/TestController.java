@@ -25,18 +25,18 @@ public class TestController {
         this.usersChatsRepository = usersChatsRepository;
     }
 
-    @GetMapping("tttt")
+    @GetMapping("test")
     public ResponseEntity<String> test(){
         return ResponseEntity.ok("OKOKOKOKOK");
     }
 
-    @GetMapping("test")
+    @GetMapping("testDriver")
     public ResponseEntity<String> testDriver(){
         PhotoSearch photoSearch = new PhotoSearch();
         String page = photoSearch.findImageByName("test");
 
 
-        return ResponseEntity.ok("OKOKOKOKOK");
+        return ResponseEntity.ok(page);
     }
 
 }
