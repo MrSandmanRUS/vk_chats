@@ -3,6 +3,9 @@ import {Root, View, Panel, PanelHeader, Div, Spinner} from "@vkontakte/vkui";
 import { Trans } from 'react-i18next';
 import pageEmitter from "../emitters/pages_emitter";
 import MenuBlock from "./menu_block";
+import ChatsRecommended from "./chats/recommended";
+import ChatsAll from "./chats/all";
+import UserInfo from "./user_info";
 
 //  Страница инициализации
 export const PAGE_INIT = 'init';
@@ -93,6 +96,8 @@ class MainComponent extends React.Component {
           <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
             <PanelHeader><Trans>Recommended Chat Title</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_CHATS_RECOMMENDED} />
+
+            <ChatsRecommended />
           </Panel>
         </View>
 
@@ -100,6 +105,8 @@ class MainComponent extends React.Component {
           <Panel id={PAGE_CHATS_ALL + '1'}>
             <PanelHeader><Trans>All Chats Title</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_CHATS_ALL} />
+
+            <ChatsAll />
           </Panel>
         </View>
 
@@ -107,6 +114,8 @@ class MainComponent extends React.Component {
           <Panel id={PAGE_USER_INFO + '1'}>
             <PanelHeader><Trans>User Info Title</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_USER_INFO} />
+
+            <UserInfo />
           </Panel>
         </View>
       </Root>
