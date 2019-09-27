@@ -11,4 +11,5 @@ import java.util.ArrayList;
 public interface ChatsRepository extends JpaRepository<Chat, Long> {
     ArrayList<Chat> findAllByOrderByIdDesc(Pageable pageable);
     ArrayList<Chat> findAllByIdLessThanEqualOrderByIdDesc(Long id, Pageable pageable);
+    Chat findFirstByInterest(String interest);
 }
