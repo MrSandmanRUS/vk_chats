@@ -3,10 +3,17 @@ package com.shematch_team.chats.component;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PhotoSearch {
+
+    @Value("${selenium.path}")
+    String exePath;
+
     public String findImageByName(String imgName) {
-        String exePath = "chromedriver_linux";
+
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
