@@ -6,7 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class PhotoSearch {
     public String findImageByName(String imgName) {
-        String exePath = "chromedriver_mac";
+        String exePath = "chromedriver_linux";
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
