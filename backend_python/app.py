@@ -1,4 +1,6 @@
 from flask import Flask
+from flask import request
+from flask import json
 
 app = Flask(__name__)
 
@@ -6,9 +8,10 @@ app = Flask(__name__)
 def main():
     return ""
 
-@app.route("/getInterest")
+@app.route("/getInterest", methods=['POST'])
 def getInterest():
-    return "some interest"
+    req_data = request.get_json()
+    return json.dumps(["Interest 1", "Interest 2", "Interest 3"])
 
 
 if __name__ == "__main__":
