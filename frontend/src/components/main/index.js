@@ -1,5 +1,6 @@
 import React from 'react';
-import {Root, View, Panel} from "@vkontakte/vkui";
+import {Root, View, Panel, PanelHeader, Div, Spinner} from "@vkontakte/vkui";
+import { Trans } from 'react-i18next';
 
 //  Страница инициализации
 const PAGE_INIT = 'init';
@@ -46,7 +47,10 @@ class MainComponent extends React.Component {
       <Root activeView={this.state.page}>
         <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
           <Panel id={PAGE_INIT + '1'}>
-
+            <PanelHeader><Trans>Init</Trans></PanelHeader>
+            <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+              <Spinner size="large" style={{ marginTop: 20 }} />
+            </Div>
           </Panel>
         </View>
 

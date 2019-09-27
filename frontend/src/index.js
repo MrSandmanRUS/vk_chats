@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
+import './i18n';
+
 import MainComponent from './components/main';
 import vkApi from './api/vk_api';
 import * as serviceWorker from './serviceWorker';
