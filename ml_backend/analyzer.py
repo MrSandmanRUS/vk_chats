@@ -39,9 +39,12 @@ def generate_synonyms(top_charts, model, numb_syn):
     return generated_words
 
 
-def predict(model, user_groups, final_numb_topic=1, init_numb_top=3, numb_syn=10):
-    top_charts = most_chats(user_groups, init_numb_top)
-    list_gen_words = generate_synonyms(top_charts, model, numb_syn)
-    list_gen_words.extend(top_charts)
-    topic = most_chats(list_gen_words, final_numb_topic)
-    return topic
+def predict(model, user_groups, final_numb_topic=5, init_numb_top=5, numb_syn=10):
+    if not user_groups:
+        top_charts = most_chats(user_groups, init_numb_top)
+        list_gen_words = generate_synonyms(top_charts, model, numb_syn)
+        list_gen_words.extend(top_charts)
+        topics = most_chats(list_gen_words, final_numb_topic)
+    else:
+        topics = ['аноним']
+    return topics
