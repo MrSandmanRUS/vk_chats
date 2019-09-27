@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './i18n';
 
-import MainComponent from './components/main';
+import MainComponent, {PAGE_CHATS_RECOMMENDED} from './components/main';
 import vkApi from './api/vk_api';
 import * as serviceWorker from './serviceWorker';
 import authEmitter from "./components/emitters/auth_emitter";
+import pageEmitter from "./components/emitters/pages_emitter";
 
 ReactDOM.render(<MainComponent />, document.getElementById('root'));
 
@@ -20,7 +21,9 @@ serviceWorker.unregister();
 vkApi.authUser()
   .then(data => {
     vkApi.setAccessToken(data.token);
+
     authEmitter.emitAuthSuccess();
+    pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
   })
   .catch(err => {
     console.error(err);

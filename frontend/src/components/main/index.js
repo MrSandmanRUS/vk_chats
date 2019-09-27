@@ -1,17 +1,16 @@
 import React from 'react';
 import {Root, View, Panel, PanelHeader, Div, Spinner} from "@vkontakte/vkui";
 import { Trans } from 'react-i18next';
+import pageEmitter from "../emitters/pages_emitter";
 
 //  Страница инициализации
-const PAGE_INIT = 'init';
-//  Главная страница
-const PAGE_INDEX = 'index';
+export const PAGE_INIT = 'init';
 //  Страница с рекомендуемыми чатами
-const PAGE_CHATS_RECOMMENDED = 'chats_recommended';
+export const PAGE_CHATS_RECOMMENDED = 'chats_recommended';
 //  Страница со всеми чатами
-const PAGE_CHATS_ALL = 'chats_all';
+export const PAGE_CHATS_ALL = 'chats_all';
 //  Страница с инфой по юзеру
-const PAGE_USER_INFO = 'user_info';
+export const PAGE_USER_INFO = 'user_info';
 
 /**
  * Основной компонент приложения
@@ -26,15 +25,29 @@ class MainComponent extends React.Component {
 
     this.state = {
       page : PAGE_INIT
+    };
+
+    //  Делаем подписку на события
+    pageEmitter.onPageChanged((page) => this.onPageChanged(page));
+  }
+
+  /**
+   * Обработчик смены страницы
+   * @param page
+   */
+  onPageChanged(page) {
+    switch(page) {
+      case PAGE_CHATS_RECOMMENDED: this.setChatsRecommenedPage(); break;
+      default: break;
     }
   }
 
   /**
    * Задает главную страницу
    */
-  setIndexPage() {
+  setChatsRecommenedPage() {
     this.setState({
-      page : PAGE_INDEX
+      page : PAGE_CHATS_RECOMMENDED
     });
   }
 
@@ -56,7 +69,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
           <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
-
+            <h1>Test</h1>
           </Panel>
         </View>
 
