@@ -1,6 +1,5 @@
 package com.shematch_team.chats.controller;
 
-import com.shematch_team.chats.entity.UsersChats;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.shematch_team.chats.repository.UserRepository;
 import com.shematch_team.chats.repository.UsersChatsRepository;

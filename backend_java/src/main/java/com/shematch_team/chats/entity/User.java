@@ -1,7 +1,6 @@
-package com.chats.chats.dao;
+package com.shematch_team.chats.entity;
 
 
-import com.shematch_team.chats.entity.Chat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

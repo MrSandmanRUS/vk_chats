@@ -1,4 +1,4 @@
-package com.chats.chats.dao;
+package com.shematch_team.chats.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
