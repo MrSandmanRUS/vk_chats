@@ -18,19 +18,14 @@ public class PhotoSearch {
         System.setProperty("webdriver.chrome.driver", exePath);
         WebDriver driver = new ChromeDriver(options);
 
-        String url = "https://mail.ru";
+        String url = "https://go.mail.ru/search_images?q=" + imgName + "&fm=1#urlhash=0";
         driver.get(url);
-        String page = driver.getPageSource();
+        String link = driver.getPageSource();
+        link = link.substring(link.indexOf("\"imUrl\": \"") + 10);
+        link = link.substring(0, link.indexOf("\""));
 
-        return page;
+        return link;
     }
-//
-//    public static void main(String args[]) {
-//        PhotoSearch photoSearch = new PhotoSearch();
-//        String test = photoSearch.findImageByName("test");
-//
-//        System.out.println(test);
-//    }
 }
 
 
