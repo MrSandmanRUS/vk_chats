@@ -20,4 +20,8 @@ public class Chat {
     private Long id;
     @Column(name = "interest")
     private String interest;
+    @Column(name = "preview")
+    private String preview;
+    @Column(name = "link")
+    private String link;
 }
