@@ -36,10 +36,10 @@ ALTER TABLE users_chats CONVERT TO CHARACTER SET utf8mb4;
 alter table users_chats add index users_chats_user_id_inx(chat_id);
 alter table users_chats add index users_chats_user_id_inx(user_id);
 
-insert into user (avatar, vk_id) values ("Kirill", "Avatar1","3");
-insert into user (avatar, vk_id) values ("Vitaly", "Avatar2","231");
-insert into user (avatar, vk_id) values ("Anton", "Avatar3","3244");
-insert into user (avatar, vk_id) values ("Iliya", "4444","342");
+insert into user (avatar, vk_id) values ("Avatar1","3");
+insert into user (avatar, vk_id) values ("Avatar2","231");
+insert into user (avatar, vk_id) values ("Avatar3","3244");
+insert into user (avatar, vk_id) values ("4444","342");
 
 insert into chats (interest, preview) values ("Music", "232131");
 insert into chats (interest, preview) values ("Comp", "222");
