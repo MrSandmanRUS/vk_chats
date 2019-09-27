@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhotoSearch {
 
-    @Value("${selenium.path}")
-    String exePath;
+    @Value("${config.selenium_path}")
+    private String exePath;
 
     public String findImageByName(String imgName) {
 

@@ -15,14 +15,16 @@ public class TestController {
     private final ChatsRepository chatsRepository;
     private final UserRepository userRepository;
     private final UsersChatsRepository usersChatsRepository;
+    private final PhotoSearch photoSearch;
 
     @Autowired
     public TestController(ChatsRepository chatsRepository,
                           UserRepository userRepository,
-                          UsersChatsRepository usersChatsRepository) {
+                          UsersChatsRepository usersChatsRepository, PhotoSearch photoSearch) {
         this.chatsRepository = chatsRepository;
         this.userRepository = userRepository;
         this.usersChatsRepository = usersChatsRepository;
+        this.photoSearch = photoSearch;
     }
 
     @GetMapping("test")
@@ -32,7 +34,6 @@ public class TestController {
 
     @GetMapping("testDriver")
     public ResponseEntity<String> testDriver(){
-        PhotoSearch photoSearch = new PhotoSearch();
         String page = photoSearch.findImageByName("test");
 
 
