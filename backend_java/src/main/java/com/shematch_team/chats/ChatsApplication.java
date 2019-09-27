@@ -7,11 +7,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan({"com.chats.chats"})
+@ComponentScan({"com.shematch_team.chats"})
 public class ChatsApplication {
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "true");
-
         SpringApplication.run(ChatsApplication.class, args);
     }
 }

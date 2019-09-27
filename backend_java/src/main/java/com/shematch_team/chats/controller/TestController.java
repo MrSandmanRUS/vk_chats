@@ -3,6 +3,7 @@ package com.shematch_team.chats.controller;
 import com.shematch_team.chats.entity.UsersChats;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.shematch_team.chats.repository.UserRepository;
+import com.shematch_team.chats.repository.UsersChatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,13 +14,15 @@ public class TestController {
 
     private final ChatsRepository chatsRepository;
     private final UserRepository userRepository;
-    private final UsersChats usersChats;
+    private final UsersChatsRepository usersChatsRepository;
 
     @Autowired
-    public TestController(ChatsRepository chatsRepository, UserRepository userRepository, UsersChats usersChats) {
+    public TestController(ChatsRepository chatsRepository,
+                          UserRepository userRepository,
+                          UsersChatsRepository usersChatsRepository) {
         this.chatsRepository = chatsRepository;
         this.userRepository = userRepository;
-        this.usersChats = usersChats;
+        this.usersChatsRepository = usersChatsRepository;
     }
 
     @GetMapping
