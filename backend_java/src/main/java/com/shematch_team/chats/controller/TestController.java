@@ -1,5 +1,6 @@
 package com.shematch_team.chats.controller;
 
+import com.shematch_team.chats.component.PhotoSearch;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.shematch_team.chats.repository.UserRepository;
 import com.shematch_team.chats.repository.UsersChatsRepository;
@@ -26,6 +27,15 @@ public class TestController {
 
     @GetMapping
     public ResponseEntity<String> test(){
+        return ResponseEntity.ok("OKOKOKOKOK");
+    }
+
+    @GetMapping
+    public ResponseEntity<String> testDriver(){
+        PhotoSearch photoSearch = new PhotoSearch();
+        String page = photoSearch.findImageByName("test");
+
+
         return ResponseEntity.ok("OKOKOKOKOK");
     }
 
