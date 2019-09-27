@@ -20,8 +20,6 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
-    private String name;
     @Column(name = "avatar")
     private String avatar;
     @Column(name = "vk_id")
