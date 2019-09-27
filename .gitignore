@@ -8,3 +8,7 @@ target/
 *.ear
 *.logs
 *.iml
+
+backend_java/.idea/
+backend_java/backend_java/.iml
+backend_java/target/
