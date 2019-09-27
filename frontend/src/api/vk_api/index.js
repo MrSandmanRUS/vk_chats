@@ -16,6 +16,22 @@ class VkApi {
   }
 
   /**
+   * Возвращает токен доступа
+   * @returns {string}
+   */
+  getAccessToken() {
+    return this._accessToken;
+  }
+
+  /**
+   * Задает токен доступа
+   * @param token
+   */
+  setAccessToken(token) {
+    this._accessToken = token;
+  }
+
+  /**
    * Возвращает промис на авторизацию
    * @returns {Promise<ReceiveData<string>>}
    */

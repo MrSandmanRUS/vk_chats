@@ -4,10 +4,7 @@ import './index.css';
 import MainComponent from './components/main';
 import vkApi from './api/vk_api';
 import * as serviceWorker from './serviceWorker';
-
-vkApi.authUser()
-  .then(data => console.log(data))
-  .catch(err => console.error(err));
+import authEmitter from "./components/emitters/auth_emitter";
 
 ReactDOM.render(<MainComponent />, document.getElementById('root'));
 
@@ -15,3 +12,14 @@ ReactDOM.render(<MainComponent />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+//  На старте приложения посылаем авторизацию пользователя
+vkApi.authUser()
+  .then(data => {
+    vkApi.setAccessToken(data.token);
+    authEmitter.emitAuthSuccess();
+  })
+  .catch(err => {
+    console.error(err);
+    authEmitter.emitAuthFailed();
+  });
