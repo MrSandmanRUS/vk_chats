@@ -2,6 +2,7 @@ import React from 'react';
 import {Root, View, Panel, PanelHeader, Div, Spinner} from "@vkontakte/vkui";
 import { Trans } from 'react-i18next';
 import pageEmitter from "../emitters/pages_emitter";
+import MenuBlock from "./menu_block";
 
 //  Страница инициализации
 export const PAGE_INIT = 'init';
@@ -38,6 +39,9 @@ class MainComponent extends React.Component {
   onPageChanged(page) {
     switch(page) {
       case PAGE_CHATS_RECOMMENDED: this.setChatsRecommenedPage(); break;
+      case PAGE_CHATS_ALL: this.setChatsAllPage(); break;
+      case PAGE_USER_INFO: this.setUserInfoPage(); break;
+
       default: break;
     }
   }
@@ -48,6 +52,24 @@ class MainComponent extends React.Component {
   setChatsRecommenedPage() {
     this.setState({
       page : PAGE_CHATS_RECOMMENDED
+    });
+  }
+
+  /**
+   * Задает страницу все чаты
+   */
+  setChatsAllPage() {
+    this.setState({
+      page : PAGE_CHATS_ALL
+    });
+  }
+
+  /**
+   * Задает страницу инфа пользователя
+   */
+  setUserInfoPage() {
+    this.setState({
+      page : PAGE_USER_INFO
     });
   }
 
@@ -69,19 +91,22 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
           <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
-            <h1>Test</h1>
+            <PanelHeader><Trans>Recommended Chat Title</Trans></PanelHeader>
+            <MenuBlock pageId={PAGE_CHATS_RECOMMENDED} />
           </Panel>
         </View>
 
         <View id={PAGE_CHATS_ALL} activePanel={PAGE_CHATS_ALL + '1'}>
           <Panel id={PAGE_CHATS_ALL + '1'}>
-
+            <PanelHeader><Trans>All Chats Title</Trans></PanelHeader>
+            <MenuBlock pageId={PAGE_CHATS_ALL} />
           </Panel>
         </View>
 
         <View id={PAGE_USER_INFO} activePanel={PAGE_USER_INFO + '1'}>
           <Panel id={PAGE_USER_INFO + '1'}>
-
+            <PanelHeader><Trans>User Info Title</Trans></PanelHeader>
+            <MenuBlock pageId={PAGE_USER_INFO} />
           </Panel>
         </View>
       </Root>

@@ -9,7 +9,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   ru: {
     translation: {
-      "Init": "Инициализация приложения"
+      "Init": "Инициализация приложения",
+      "Recommended Chat Title" : "Рекомендованные чаты",
+      "All Chats Title" : "Все чаты",
+      "User Info Title" : "Информация о пользователе"
     }
   }
 };
