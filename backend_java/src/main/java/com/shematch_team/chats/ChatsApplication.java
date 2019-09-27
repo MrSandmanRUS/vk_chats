@@ -1,4 +1,4 @@
-package com.chats.chats;
+package com.shematch_team.chats;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
