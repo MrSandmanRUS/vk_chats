@@ -1,4 +1,16 @@
 import React from 'react';
+import {Root, View, Panel} from "@vkontakte/vkui";
+
+//  Страница инициализации
+const PAGE_INIT = 'init';
+//  Главная страница
+const PAGE_INDEX = 'index';
+//  Страница с рекомендуемыми чатами
+const PAGE_CHATS_RECOMMENDED = 'chats_recommended';
+//  Страница со всеми чатами
+const PAGE_CHATS_ALL = 'chats_all';
+//  Страница с инфой по юзеру
+const PAGE_USER_INFO = 'user_info';
 
 /**
  * Основной компонент приложения
@@ -10,6 +22,19 @@ class MainComponent extends React.Component {
    */
   constructor(props) {
     super(props);
+
+    this.state = {
+      page : PAGE_INIT
+    }
+  }
+
+  /**
+   * Задает главную страницу
+   */
+  setIndexPage() {
+    this.setState({
+      page : PAGE_INDEX
+    });
   }
 
   /**
@@ -18,9 +43,31 @@ class MainComponent extends React.Component {
    */
   render() {
     return (
-      <div>
-        <h1>1</h1>
-      </div>
+      <Root activeView={this.state.page}>
+        <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
+          <Panel id={PAGE_INIT + '1'}>
+
+          </Panel>
+        </View>
+
+        <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
+          <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
+
+          </Panel>
+        </View>
+
+        <View id={PAGE_CHATS_ALL} activePanel={PAGE_CHATS_ALL + '1'}>
+          <Panel id={PAGE_CHATS_ALL + '1'}>
+
+          </Panel>
+        </View>
+
+        <View id={PAGE_USER_INFO} activePanel={PAGE_USER_INFO + '1'}>
+          <Panel id={PAGE_USER_INFO + '1'}>
+
+          </Panel>
+        </View>
+      </Root>
     );
   }
 }
