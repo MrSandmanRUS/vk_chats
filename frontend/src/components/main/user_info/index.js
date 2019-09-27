@@ -1,4 +1,6 @@
 import React from 'react';
+import {Group, Cell, Button, Avatar, View, Panel} from "@vkontakte/vkui";
+import userInfo from "../../../helper/user_info";
 
 /**
  * Компонент с инфой по юзеру
@@ -18,9 +20,21 @@ class UserInfo extends React.Component {
    */
   render() {
     return (
-      <div>
+      <View id={'UserInfoView'} activePanel={'UserInfoPanel'}>
+        <Panel id={'UserInfoPanel'}>
+          <Group title="User Info">
+            <Cell
+              photo={userInfo.getUser().avatar}
+              description="Ваши интересы: 1,2,3"
+              before={<Avatar src={userInfo.getUser().avatar} size={80}/>}
+              size="l"
+            >
+              {userInfo.getUser().first_name + ' ' + userInfo.getUser().last_name}
+            </Cell>
+          </Group>
+        </Panel>
+      </View>
 
-      </div>
     );
   }
 }

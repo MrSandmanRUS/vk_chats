@@ -9,6 +9,7 @@ import vkApi from './api/vk_api';
 import * as serviceWorker from './serviceWorker';
 import authEmitter from "./components/emitters/auth_emitter";
 import pageEmitter from "./components/emitters/pages_emitter";
+import userInfo from "./helper/user_info";
 
 ReactDOM.render(<MainComponent />, document.getElementById('root'));
 
@@ -22,8 +23,17 @@ vkApi.authUser()
   .then(data => {
     vkApi.setAccessToken(data.token);
 
-    authEmitter.emitAuthSuccess();
-    pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
+    vkApi.getUserInfo()
+      .then(data => {
+        userInfo.setUserData(data);
+
+        authEmitter.emitAuthSuccess();
+        pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
+      })
+      .catch(err => {
+        console.error(err);
+        authEmitter.emitAuthFailed();
+      });
   })
   .catch(err => {
     console.error(err);

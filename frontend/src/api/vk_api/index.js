@@ -47,6 +47,18 @@ class VkApi {
   }
 
   /**
+   * Возвращает промис на получение данных пользователя
+   * @returns {Promise<any>}
+   */
+  getUserInfo() {
+    return new Promise((resolve, reject) => {
+      this._sendMethod('VKWebAppGetUserInfo', {})
+        .then(data => resolve(data))
+        .catch(err => reject(err));
+    });
+  }
+
+  /**
    * Отсылает запрос к ВК и возвращает промис
    * @param methodName
    * @param data
