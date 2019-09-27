@@ -1,6 +1,7 @@
-package com.shematch_team.chats.entity;
+package com.chats.chats.dao;
 
 
+import com.shematch_team.chats.entity.Chat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,9 +23,18 @@ public class User {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "avatar")
+    private String avatar;
     @Column(name = "vk_id")
     private String vkId;
     @Column(name = "info")
     private String info;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_chats",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<Chat> chats;
 }
