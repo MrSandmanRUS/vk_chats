@@ -13,17 +13,6 @@ create table user (
 );
 ALTER TABLE `user` CONVERT TO CHARACTER SET utf8mb4;
 
-
-create table users_chats (
-                      id bigint not null auto_increment,
-                      user_id bigint not null,
-                      chat_id bigint not null,
-                      constraint primary key (id),
-                      unique key(user_id, chat_id)
-);
-ALTER TABLE `users_chats` CONVERT TO CHARACTER SET utf8mb4;
-
-
 create table chats (
                        id bigint not null auto_increment,
                        interest varchar(512),
@@ -34,10 +23,28 @@ create table chats (
 );
 ALTER TABLE `chats` CONVERT TO CHARACTER SET utf8mb4;
 
+create table users_chats (
+                      id bigint not null auto_increment,
+                      user_id bigint not null,
+                      chat_id bigint not null,
+                      primary key (id),
+                      unique key(user_id, chat_id),
+					  foreign key (user_id) references user(id),
+					  foreign key (chat_id) references chats(id)
+);
+ALTER TABLE users_chats CONVERT TO CHARACTER SET utf8mb4;
+
+alter table users_chats add index users_chats_user_id_inx(chat_id);
+alter table users_chats add index users_chats_user_id_inx(user_id);
+
 insert into user (name, avatar, vk_id) values ("Kirill", "Avatar1","3");
 insert into user (name, avatar, vk_id) values ("Vitaly", "Avatar2","231");
 insert into user (name, avatar, vk_id) values ("Anton", "Avatar3","3244");
 insert into user (name, avatar, vk_id) values ("Iliya", "4444","342");
+
+insert into chats (interest, preview) values ("Music", "232131");
+insert into chats (interest, preview) values ("Comp", "222");
+insert into chats (interest, preview) values ("Matan", "44");
 
 insert into users_chats (user_id, chat_id) values (1,1);
 insert into users_chats (user_id, chat_id) values (1,2);
@@ -45,7 +52,3 @@ insert into users_chats (user_id, chat_id) values (2,1);
 insert into users_chats (user_id, chat_id) values (3,2);
 insert into users_chats (user_id, chat_id) values (3,3);
 insert into users_chats (user_id, chat_id) values (4,3);
-
-insert into chats (interest, preview) values ("Music", "232131");
-insert into chats (interest, preview) values ("Comp", "222");
-insert into chats (interest, preview) values ("Matan", "44");
