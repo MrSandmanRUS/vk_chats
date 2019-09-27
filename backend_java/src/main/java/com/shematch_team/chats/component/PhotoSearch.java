@@ -22,13 +22,13 @@ public class PhotoSearch {
 
         return page;
     }
-
-    public static void main(String args[]) {
-        PhotoSearch photoSearch = new PhotoSearch();
-        String test = photoSearch.findImageByName("test");
-
-        System.out.println(test);
-    }
+//
+//    public static void main(String args[]) {
+//        PhotoSearch photoSearch = new PhotoSearch();
+//        String test = photoSearch.findImageByName("test");
+//
+//        System.out.println(test);
+//    }
 }
 
 
