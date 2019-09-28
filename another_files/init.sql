@@ -59,5 +59,4 @@ create table translates (
 );
 
 create index russian_index on translates(russian);
-create index created_when_translates_index on translates(russian);
-
+create index created_when_translates_index on translates(created_when);
