@@ -74,6 +74,7 @@ public class VkBot {
         Thread.sleep(1000);
         chat.setChatVkId(chatId);
         String link = messages.getInviteLink(actor, 2000000000 + chatId).execute().getLink();
+        Thread.sleep(500);
         return link;
     }
 
