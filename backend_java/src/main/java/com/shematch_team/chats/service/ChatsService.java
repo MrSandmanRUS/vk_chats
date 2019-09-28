@@ -60,7 +60,8 @@ public class ChatsService {
         List<String> interests = getInterestsFromPython(userRequestDto);
         int counter = 0;
         for (String interest : interests) {
-            interests.set(counter, toUpperCaseForFirstLetter(interest));
+            String tempStr = toUpperCaseForFirstLetter(interest);
+            interests.set(counter, tempStr);
             ++counter;
         }
         Set<Chat> chats = Sets.newHashSet();

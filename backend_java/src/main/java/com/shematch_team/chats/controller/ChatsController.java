@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class ChatsController {
@@ -57,6 +54,15 @@ public class ChatsController {
         } else {
             allChats = chatsRepository.findAllByIdLessThanEqualOrderByIdDesc(startId, pageable);
         }
+        List<Chat> allChatsRes = new ArrayList<>();
+        int counter = 0;
+        for (Chat chat : allChats) {
+            String tempStr = toUpperCaseForFirstLetter(chat.getInterest());
+            chat.setInterest(tempStr);
+            allChatsRes.set(counter, chat);
+            ++counter;
+        }
+
         return ResponseEntity.ok(allChats);
     }
 
@@ -107,7 +113,7 @@ public class ChatsController {
         } else {
             throw new Exception("User doesn't exist");
         }
-
+        
         return ResponseEntity.ok(users);
     }
 
@@ -115,7 +121,17 @@ public class ChatsController {
     private Set<Chat> getRecommendedChats(UserRequestDto userRequestDto) {
         String vkId = userRequestDto.getVkId();
         Optional<User> user = userRepository.findByVkId(vkId);
-        return user.get().getChats();
+        Set<Chat> tempRes = user.get().getChats();
+        HashSet<Chat> res = new HashSet<>();
+
+        for (Chat chat : tempRes) {
+            String tempStr = toUpperCaseForFirstLetter(chat.getInterest());
+            chat.setInterest(tempStr);
+            res.add(chat);
+
+        }
+
+        return res;
     }
 
     private boolean isCorrectUser(UserRequestDto userRequestDto) throws IOException {
@@ -146,5 +162,18 @@ public class ChatsController {
         return true;
     }
 
+    private String toUpperCaseForFirstLetter(String text) {
+        StringBuilder builder = new StringBuilder(text);
+        //выставляем первый символ заглавным, если это буква
+        if (Character.isAlphabetic(text.codePointAt(0)))
+            builder.setCharAt(0, Character.toUpperCase(text.charAt(0)));
+
+        //крутимся в цикле, и меняем буквы, перед которыми пробел на заглавные
+        for (int i = 1; i < text.length(); i++)
+            if (Character.isAlphabetic(text.charAt(i)) && Character.isSpaceChar(text.charAt(i - 1)))
+                builder.setCharAt(i, Character.toUpperCase(text.charAt(i)));
+
+        return builder.toString();
+    }
 
 }
