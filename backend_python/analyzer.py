@@ -4,7 +4,7 @@ import re
 import heapq
 from itertools import combinations
 from collections import Counter
-from .nltk_levenshtein import perform_corpus
+# from .nltk_levenshtein import perform_corpus
 
 with open('stopwords.txt', 'rt', encoding='utf-8') as file:
     input_str = file.read()
@@ -24,7 +24,7 @@ def del_shortest_word(iter_obj):
 
 
 def filter_verbs(word):
-    # del verbs
+    # find verbs
     if re.search('.*?[аиеёоуыэюя]ть(ся)?', word):
         if word.find('подслуш') != -1:
             return 'подслушано'
