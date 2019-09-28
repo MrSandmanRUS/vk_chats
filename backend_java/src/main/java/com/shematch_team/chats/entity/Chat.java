@@ -24,4 +24,6 @@ public class Chat {
     private String preview;
     @Column(name = "link")
     private String link;
+    @Column(name = "chat_vk_id")
+    private Integer chatVkId;
 }
