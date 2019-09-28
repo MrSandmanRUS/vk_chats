@@ -93,11 +93,17 @@ public class VkBot {
     public void doPostsInChats() throws Exception {
         List<Chat> chats = chatsRepository.findAll();
         for (Chat chat : chats) {
+            System.out.println("Репостну-ка я в чат " +chat.getInterest());
             try {
                 String interest = chat.getInterest();
                 List<Group> groups = vkApiClient.groups().search(actor, interest).execute().getItems();
                 WallpostFull wallpostFull = findPostInGroups(groups);
                 String postId = "wall" + wallpostFull.getOwnerId() + "_" + wallpostFull.getId();
+                Thread.sleep(1000L);
+                try {
+                    vkApiClient.messages().joinChatByInviteLink(actor, chat.getLink()).execute();
+                } catch (Exception e){}
+                Thread.sleep(1000L);
                 vkApiClient.messages().send(actor).chatId(chat.getChatVkId()).randomId(RandomUtils.nextInt()).attachment(postId).execute();
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -145,6 +151,10 @@ public class VkBot {
 
                 String linkToChat = driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/section/div/div/input")).getAttribute("value");
                 chat.setLink(linkToChat);
+
+                Thread.sleep(500L);
+                //назад
+               // driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/section/header/div[1]/button")).click();
 
                 Thread.sleep(500L);
             } catch (Exception e) {
