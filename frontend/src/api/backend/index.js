@@ -61,7 +61,7 @@ class BackendApi {
    */
   getChatLink(chat_id) {
     return new Promise((resolve, reject) => {
-      this._sendRequest(backendUrl + "/getChatLink?chat_id" + chat_id, GET)
+      this._sendRequest(backendUrl + "/getChatLink?chat_id=" + chat_id, GET)
         .then(link => resolve(link))
         .catch(err => reject(err));
     });
