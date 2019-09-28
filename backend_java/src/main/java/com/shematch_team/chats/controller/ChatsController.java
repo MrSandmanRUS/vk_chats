@@ -86,30 +86,31 @@ public class ChatsController {
     }
 
     private boolean isCorrectUser(UserRequestDto userRequestDto) throws IOException {
-        String vkId = userRequestDto.getVkId();
-        String ip = userRequestDto.getIp();
-        String vkToken = userRequestDto.getVkToken();
-        String urlToRead = "https://api.vk.com/method/secure.checkToken?ip=" + ip + "&token=" + token + "&access_token=" + vkToken + "&v=5.101";
-        StringBuilder result = new StringBuilder();
-        URL url = new URL(urlToRead);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        rd.close();
-        JSONObject jsonResponse = new JSONObject(result.toString());
-        jsonResponse = (JSONObject) jsonResponse.get("response");
-
-        Integer vkIdResponse = (Integer) jsonResponse.get("user_id");
-
-        if (!vkIdResponse.toString().equals(vkId)) {
-            return false;
-        } else {
-            return true;
-        }
+//        String vkId = userRequestDto.getVkId();
+//        String ip = userRequestDto.getIp();
+//        String vkToken = userRequestDto.getVkToken();
+//        String urlToRead = "https://api.vk.com/method/secure.checkToken?ip=" + ip + "&token=" + token + "&access_token=" + vkToken + "&v=5.101";
+//        StringBuilder result = new StringBuilder();
+//        URL url = new URL(urlToRead);
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//        conn.setRequestMethod("GET");
+//        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//        String line;
+//        while ((line = rd.readLine()) != null) {
+//            result.append(line);
+//        }
+//        rd.close();
+//        JSONObject jsonResponse = new JSONObject(result.toString());
+//        jsonResponse = (JSONObject) jsonResponse.get("response");
+//
+//        Integer vkIdResponse = (Integer) jsonResponse.get("user_id");
+//
+//        if (!vkIdResponse.toString().equals(vkId)) {
+//            return false;
+//        } else {
+//            return true;
+//        }
+        return true;
     }
 
 
