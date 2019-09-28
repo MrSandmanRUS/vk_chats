@@ -1,5 +1,18 @@
 import React from 'react';
-import {Avatar, Cell, Group, Link, List, Panel, PullToRefresh, Spinner, View} from "@vkontakte/vkui";
+import {
+  Avatar,
+  Cell, FormLayoutGroup,
+  Group,
+  Link,
+  List,
+  ModalPage,
+  ModalRoot,
+  Panel,
+  PullToRefresh,
+  Spinner,
+  View,
+  FormLayout
+} from "@vkontakte/vkui";
 import backendApi from "../../../../api/backend";
 import {Trans} from "react-i18next";
 
@@ -21,7 +34,7 @@ class ChatsAll extends React.Component {
       firstInit: true,
       chatLinkLoading: false,
       modalLink: '',
-      modalShowed: false
+      modalActive: null
     };
     this.onRefresh = () => {this.updateChats();}
   }
@@ -58,7 +71,7 @@ class ChatsAll extends React.Component {
    * @param link
    */
   showChatModal(link) {
-    this.setState({modalLink: link, modalShowed: true});
+    this.setState({modalLink: link, modalActive: 'chatLink'});
   }
 
   /**
@@ -71,10 +84,9 @@ class ChatsAll extends React.Component {
 
     if (!link) {
       backendApi.getChatLink(id)
-        .then(link => {
-          console.log(link);
+        .then(data => {
           this.setState({chatLinkLoading: false});
-          this.showChatModal(link);
+          this.showChatModal(data.link);
         })
         .catch(err => alert(err));
     } else {
@@ -130,28 +142,31 @@ class ChatsAll extends React.Component {
     }
   }
 
-  renderJoinChatLink() {
-    if (this.state.modalShowed) {
-      return (
-        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Link href={this.state.modalLink} target={'_blank'}>Ссылка на присоедиение</Link>
-        </div>
-      )
-    }
-  }
-
   /**
    * Рендер приложения
    * @returns {*}
    */
   render() {
+    const modal = (
+      <ModalRoot activeModal={this.state.modalActive}>
+        <ModalPage id={'chatLink'}>
+          <FormLayout>
+            <FormLayoutGroup>
+              <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                <Link href={this.state.modalLink} target={'_blank'}>Нажмите для перехода к беседе</Link>
+              </div>
+            </FormLayoutGroup>
+          </FormLayout>
+        </ModalPage>
+      </ModalRoot>
+    );
+
     return (
-      <View id={COMPONENT_NAME + 'View'} activePanel={COMPONENT_NAME + 'Panel'}>
+      <View id={COMPONENT_NAME + 'View'} activePanel={COMPONENT_NAME + 'Panel'} modal={modal}>
         <Panel id={COMPONENT_NAME + 'Panel'}>
           <Group>
             { this.renderStartSpinner() }
             { this.renderChatLink() }
-            { this.renderJoinChatLink() }
 
             <PullToRefresh onRefresh={this.onRefresh} isFetching={this.state.fetching}>
               <Group>
