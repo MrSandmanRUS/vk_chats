@@ -124,7 +124,9 @@ public class VkBot {
                 System.out.println("Репостну-ка я в чат " + chat.getInterest());
                 try {
                     //doVkApiPosting(chat);
-                    doPostingWithSelenium(chat);
+                    synchronized (driver) {
+                        doPostingWithSelenium(chat);
+                    }
                 } catch (Exception e) {
 
                 }
