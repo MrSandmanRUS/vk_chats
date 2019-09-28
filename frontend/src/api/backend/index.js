@@ -14,7 +14,14 @@ class BackendApi {
    */
   getRecommendedChats(token, user_id, info) {
     return new Promise((resolve, reject) => {
-
+      this._sendRequest(backendUrl + "/getRecommended", POST, {
+        vk_id: user_id,
+        vk_token: token,
+        ip: "127.0.0.1",
+        info: info
+      })
+        .then(chats => resolve(chats))
+        .catch(err => reject(err));
     });
   }
 

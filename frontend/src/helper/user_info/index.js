@@ -6,7 +6,6 @@ class UserInfo {
    * Конструктор класса
    */
   constructor() {
-    this._inited = false;
     this._user = {
       first_name: '',
       last_name: '',
@@ -15,14 +14,7 @@ class UserInfo {
       country: '',
       bday: ''
     };
-  }
-
-  /**
-   * Возвращает флаг инициализации
-   * @returns {boolean}
-   */
-  isInited() {
-    return this._inited;
+    this._groups = [];
   }
 
   /**
@@ -31,6 +23,14 @@ class UserInfo {
    */
   getUser() {
     return this._user;
+  }
+
+  /**
+   * Возвращает группы пользователя
+   * @returns {Array}
+   */
+  getGroups() {
+    return this._groups;
   }
 
   /**
@@ -44,8 +44,16 @@ class UserInfo {
     if (data.city) this._user.city = data.city.title;
     if (data.country) this._user.country = data.country.title;
     if (data.bday) this._user.bday = data.bdate;
+  }
 
-    this._inited = true;
+  /**
+   * Задает группы пользователя
+   * @param data
+   */
+  setGroupsData(data) {
+    this._groups = [];
+
+
   }
 }
 
