@@ -27,9 +27,7 @@ create table users_chats (
                       user_id bigint not null,
                       chat_id bigint not null,
                       primary key (id),
-                      unique key(user_id, chat_id),
-					  foreign key (user_id) references user(id),
-					  foreign key (chat_id) references chats(id)
+                      unique key(user_id, chat_id)
 );
 ALTER TABLE users_chats CONVERT TO CHARACTER SET utf8mb4;
 
