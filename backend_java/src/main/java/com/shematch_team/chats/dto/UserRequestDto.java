@@ -1,10 +1,12 @@
 package com.shematch_team.chats.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -24,6 +26,9 @@ public class UserRequestDto {
     private String ip;
 
     @JsonProperty("info")
-    private Map<String, Object> info;
+    private Map<String,Object> info;
+
+    @JsonIgnore
+    private JSONObject infoJson;
 
 }

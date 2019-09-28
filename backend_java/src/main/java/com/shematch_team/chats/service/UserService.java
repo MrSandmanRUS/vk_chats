@@ -6,9 +6,11 @@ import com.shematch_team.chats.component.Translator;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.User;
 import com.shematch_team.chats.repository.UserRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -26,15 +28,18 @@ public class UserService {
 
     public void save(UserRequestDto userRequestDto) throws JsonProcessingException {
         User user = new User();
-        Map<String, Object> info = userRequestDto.getInfo();
-        user.setInfo(om.writeValueAsString(info));
+        JSONObject info = userRequestDto.getInfoJson();
+        user.setInfo(info.toString());
         user.setVkId(userRequestDto.getVkId());
         userRepository.save(user);
     }
 
-    public void translateInfo(UserRequestDto userRequestDto) {
+    public void translateInfo(UserRequestDto userRequestDto) throws IOException {
         Map<String, Object> info = userRequestDto.getInfo();
-        translateInfoForMap(info);
+        String infoString = om.writeValueAsString(info);
+        String translated = translator.getFromYandexService(infoString).get();
+        JSONObject translatedObject = new JSONObject(translated.replace("\n","").replace("\r",""));
+        userRequestDto.setInfoJson(translatedObject);
     }
 
     private void translateInfoForMap(Map<String, Object> info) {
@@ -69,7 +74,7 @@ public class UserService {
         String[] wordsArray = words.split("[\\s,\\.:\\-_#\\{\\}\\[\\]]");
         for (String word : wordsArray) {
             if (isEnglish(word)) {
-                Optional<String> russian = translator.translateToRussian(word);
+                Optional<String> russian = Optional.empty();// = translator.translateToRussian(word);
                 if (russian.isPresent()) {
                     translatedWordsBuilder.append(russian.get());
                 } else {

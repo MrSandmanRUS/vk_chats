@@ -16,31 +16,33 @@ public class PhotoSearch {
     public String findImageByName(String imgName) {
 
         WebDriver driver = chatsWebDriver.get();
+        synchronized (driver) {
 
-        String url = "https://go.mail.ru/search_images?q=" + imgName + "&fm=1#urlhash=0";
-        driver.get(url);
-        String link = driver.getPageSource();
+            String url = "https://go.mail.ru/search_images?q=" + imgName + "&fm=1#urlhash=0";
+            driver.get(url);
+            String link = driver.getPageSource();
 
-        while (true) {
-            String tempLink = link.substring(link.indexOf("\"imUrl\": \"") + 10);
-            String res_link = tempLink.substring(0, tempLink.indexOf("\""));
-            try {
-                if (res_link.length() < 1) {
+            while (true) {
+                String tempLink = link.substring(link.indexOf("\"imUrl\": \"") + 10);
+                String res_link = tempLink.substring(0, tempLink.indexOf("\""));
+                try {
+                    if (res_link.length() < 1) {
+                        break;
+                    }
+                    String protocol = res_link.substring(0, 5);
+                    if (protocol.equals("https") && !res_link.contains("fotocdn") && !res_link.contains("astrakhantravel.ru")) {
+                        link = res_link;
+                        break;
+                    } else {
+                        link = tempLink;
+                    }
+                } catch (Exception exc) {
                     break;
                 }
-                String protocol = res_link.substring(0, 5);
-                if (protocol.equals("https") && !res_link.contains("fotocdn")) {
-                    link = res_link;
-                    break;
-                } else {
-                    link = tempLink;
-                }
-            } catch (Exception exc)  {
-                break;
             }
-        }
 
-        return link;
+            return link;
+        }
     }
 }
 

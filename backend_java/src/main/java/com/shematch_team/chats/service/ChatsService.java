@@ -48,7 +48,7 @@ public class ChatsService {
             chat = new Chat();
             chat.setInterest(interest.toLowerCase());
             chat.setPreview(photoSearch.findImageByName(interest.toLowerCase()));
-            vkBot.getChatLink(chat);
+            //vkBot.getChatLink(chat);
             chatsRepository.save(chat);
             chat = chatsRepository.findFirstByInterest(interest.toLowerCase());
         }
@@ -60,7 +60,8 @@ public class ChatsService {
         List<String> interests = getInterestsFromPython(userRequestDto);
         int counter = 0;
         for (String interest : interests) {
-            interests.set(counter, toUpperCaseForFirstLetter(interest));
+            String tempStr = toUpperCaseForFirstLetter(interest);
+            interests.set(counter, tempStr);
             ++counter;
         }
         Set<Chat> chats = Sets.newHashSet();
@@ -76,7 +77,7 @@ public class ChatsService {
 
 
     private List<String> getInterestsFromPython(UserRequestDto userRequestDto) throws IOException {
-        String info = om.writeValueAsString(userRequestDto.getInfo());
+        String info = userRequestDto.getInfoJson().toString();
         String query = "http://127.0.0.1:81/getInterest";
         URL url = new URL(query);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

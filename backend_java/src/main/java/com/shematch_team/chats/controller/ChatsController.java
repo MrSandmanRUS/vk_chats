@@ -1,5 +1,6 @@
 package com.shematch_team.chats.controller;
 
+import com.shematch_team.chats.component.VkBot;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
@@ -20,10 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class ChatsController {
@@ -33,18 +31,20 @@ public class ChatsController {
     private final UsersChatsRepository usersChatsRepository;
     private final ChatsService chatsService;
     private final UserService userService;
+    private final VkBot vkBot;
     @Value("${config.token}")
     private String token;
 
 
     @Autowired
     public ChatsController(ChatsRepository chatsRepository, UserRepository userRepository, ChatsService chatsService,
-                           UserService userService, UsersChatsRepository usersChatsRepository) {
+                           UserService userService, UsersChatsRepository usersChatsRepository, VkBot vkBot) {
         this.chatsRepository = chatsRepository;
         this.userRepository = userRepository;
         this.chatsService = chatsService;
         this.userService = userService;
         this.usersChatsRepository = usersChatsRepository;
+        this.vkBot = vkBot;
     }
 
     @GetMapping("getAll")
@@ -57,7 +57,15 @@ public class ChatsController {
         } else {
             allChats = chatsRepository.findAllByIdLessThanEqualOrderByIdDesc(startId, pageable);
         }
-        return ResponseEntity.ok(allChats);
+        List<Chat> allChatsRes = new ArrayList<>();
+
+        for (Chat chat : allChats) {
+            String tempStr = toUpperCaseForFirstLetter(chat.getInterest());
+            chat.setInterest(tempStr);
+            allChatsRes.add(chat);
+        }
+
+        return ResponseEntity.ok(allChatsRes);
     }
 
     @PostMapping("getRecommended")
@@ -76,6 +84,19 @@ public class ChatsController {
         return ResponseEntity.ok(getRecommendedChats(userRequestDto));
     }
 
+    @GetMapping("getChatLink")
+    public ResponseEntity<Chat> getRecommended(@RequestParam("chat_id") Long chatId) throws Exception {
+        Chat chat = chatsRepository.findById(chatId).orElse(null);
+        if (chat == null) {
+            throw new Exception("Incorrect chat id");
+        }
+
+        vkBot.getChatLink(chat);
+        chatsRepository.save(chat);
+        chat = chatsRepository.findById(chatId).orElse(null);
+
+        return ResponseEntity.ok(chat);
+    }
 
     @GetMapping("getLikeUser")
     public ResponseEntity<Set<User>> getLikeUser(@RequestParam("vk_id") String vkId,
@@ -107,7 +128,7 @@ public class ChatsController {
         } else {
             throw new Exception("User doesn't exist");
         }
-
+        
         return ResponseEntity.ok(users);
     }
 
@@ -115,7 +136,17 @@ public class ChatsController {
     private Set<Chat> getRecommendedChats(UserRequestDto userRequestDto) {
         String vkId = userRequestDto.getVkId();
         Optional<User> user = userRepository.findByVkId(vkId);
-        return user.get().getChats();
+        Set<Chat> tempRes = user.get().getChats();
+        HashSet<Chat> res = new HashSet<>();
+
+        for (Chat chat : tempRes) {
+            String tempStr = toUpperCaseForFirstLetter(chat.getInterest());
+            chat.setInterest(tempStr);
+            res.add(chat);
+
+        }
+
+        return res;
     }
 
     private boolean isCorrectUser(UserRequestDto userRequestDto) throws IOException {
@@ -146,5 +177,18 @@ public class ChatsController {
         return true;
     }
 
+    private String toUpperCaseForFirstLetter(String text) {
+        StringBuilder builder = new StringBuilder(text);
+        //выставляем первый символ заглавным, если это буква
+        if (Character.isAlphabetic(text.codePointAt(0)))
+            builder.setCharAt(0, Character.toUpperCase(text.charAt(0)));
+
+        //крутимся в цикле, и меняем буквы, перед которыми пробел на заглавные
+        for (int i = 1; i < text.length(); i++)
+            if (Character.isAlphabetic(text.charAt(i)) && Character.isSpaceChar(text.charAt(i - 1)))
+                builder.setCharAt(i, Character.toUpperCase(text.charAt(i)));
+
+        return builder.toString();
+    }
 
 }
