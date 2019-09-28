@@ -14,7 +14,7 @@ const resources = {
       "Recommended Chat Title" : "Рекомендованные",
       "All Chats Title" : "Все",
       "User Info Title" : "Инфо",
-      "Users Common Interests Title" : "Пользователи",
+      "Users Common Interests Title" : "Похожие люди",
       "Conversation" : "Беседа",
       "Interests" : "Интересы",
       "Profile" : "Открыть профиль"
