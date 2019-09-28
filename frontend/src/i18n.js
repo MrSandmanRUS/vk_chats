@@ -9,6 +9,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   ru: {
     translation: {
+      "App Name" : "ВЧатике",
       "Init": "Инициализация приложения",
       "Recommended Chat Title" : "Рекомендованные",
       "All Chats Title" : "Все",

@@ -98,7 +98,7 @@ class MainComponent extends React.Component {
       <Root activeView={this.state.page}>
         <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
           <Panel id={PAGE_INIT + '1'}>
-            <PanelHeader><Trans>Init</Trans></PanelHeader>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
             <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               <Spinner size="large" style={{ marginTop: 20 }} />
             </Div>
@@ -107,7 +107,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
           <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
-            <PanelHeader><Trans>Recommended Chat Title</Trans></PanelHeader>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_CHATS_RECOMMENDED} />
 
             <ChatsRecommended />
@@ -116,7 +116,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_CHATS_ALL} activePanel={PAGE_CHATS_ALL + '1'}>
           <Panel id={PAGE_CHATS_ALL + '1'}>
-            <PanelHeader><Trans>All Chats Title</Trans></PanelHeader>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_CHATS_ALL} />
 
             <ChatsAll />
@@ -125,7 +125,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_USER_INFO} activePanel={PAGE_USER_INFO + '1'}>
           <Panel id={PAGE_USER_INFO + '1'}>
-            <PanelHeader><Trans>User Info Title</Trans></PanelHeader>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_USER_INFO} />
 
             <UserInfo />
@@ -134,7 +134,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_USERS_COMMON} activePanel={PAGE_USERS_COMMON + '1'}>
           <Panel id={PAGE_USERS_COMMON + '1'}>
-            <PanelHeader><Trans>Users Common Interests Title</Trans></PanelHeader>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_USERS_COMMON} />
 
             <UsersCommonInterests />
