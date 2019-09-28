@@ -65,12 +65,8 @@ public class ChatsService {
 
 
     private List<String> getInterestsFromPython(UserRequestDto userRequestDto) throws IOException {
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("123");
-        strings.add("test");
-        return strings;
-        /*String info = om.writeValueAsString(userRequestDto.getInfo());
-        String query = "http://localhost:81/getInterest";
+        String info = om.writeValueAsString(userRequestDto.getInfo());
+        String query = "http://127.0.0.1:81/getInterest";
         URL url = new URL(query);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(15000);
@@ -78,14 +74,17 @@ public class ChatsService {
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("POST");
-        try(OutputStream os = conn.getOutputStream()) {
-            os.write(info.getBytes("UTF-8"));
-            try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
-                String result = IOUtils.toString(in, "UTF-8");
-                conn.disconnect();
-                return om.readValue(result, List.class);
-            }
-        }*/
+        OutputStream os = conn.getOutputStream();
+        os.write(info.getBytes("UTF-8"));
+        os.close();
+
+        // read the response
+        InputStream in = new BufferedInputStream(conn.getInputStream());
+        String result = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+
+        in.close();
+        conn.disconnect();
+        return om.readValue(result, List.class);
     }
 
 }
