@@ -74,6 +74,14 @@ class UsersCommonInterests extends React.Component {
    * Отрисовка списка пользователей
    */
   renderUsers() {
+    if (!this.state.users.length) {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <h1>Не удалось найти людей со схожими интересами</h1>
+        </div>
+      );
+    }
+
     return this.state.users.map(({ id, avatar, name, link }, i) =>
       <Cell key={i}
             before={<Avatar src={avatar} />}
