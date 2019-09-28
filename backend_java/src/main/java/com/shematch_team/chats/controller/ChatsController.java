@@ -1,5 +1,6 @@
 package com.shematch_team.chats.controller;
 
+import com.shematch_team.chats.component.VkBot;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
@@ -30,18 +31,20 @@ public class ChatsController {
     private final UsersChatsRepository usersChatsRepository;
     private final ChatsService chatsService;
     private final UserService userService;
+    private final VkBot vkBot;
     @Value("${config.token}")
     private String token;
 
 
     @Autowired
     public ChatsController(ChatsRepository chatsRepository, UserRepository userRepository, ChatsService chatsService,
-                           UserService userService, UsersChatsRepository usersChatsRepository) {
+                           UserService userService, UsersChatsRepository usersChatsRepository, VkBot vkBot) {
         this.chatsRepository = chatsRepository;
         this.userRepository = userRepository;
         this.chatsService = chatsService;
         this.userService = userService;
         this.usersChatsRepository = usersChatsRepository;
+        this.vkBot = vkBot;
     }
 
     @GetMapping("getAll")
@@ -81,6 +84,21 @@ public class ChatsController {
         return ResponseEntity.ok(getRecommendedChats(userRequestDto));
     }
 
+    @GetMapping("getChatLink")
+    public ResponseEntity<Chat> getRecommended(@RequestParam("chat_id") Long chatId) throws Exception {
+        Chat chat = chatsRepository.findById(chatId).orElse(null);
+        if (chat == null) {
+            throw new Exception("Incorrect chat id");
+        }
+
+        if (chat.getLink() == null) {
+            vkBot.getChatLink(chat);
+            chatsRepository.save(chat);
+            chat = chatsRepository.findById(chatId).orElse(null);
+        }
+
+        return ResponseEntity.ok(chat);
+    }
 
     @GetMapping("getLikeUser")
     public ResponseEntity<Set<User>> getLikeUser(@RequestParam("vk_id") String vkId,
@@ -102,8 +120,8 @@ public class ChatsController {
             }
 
             for (UsersChats usersChats : usersChatsArray) {
-                User tempUser = userRepository.findById(usersChats.getId()).orElse(null);
-                if (tempUser != null) {
+                User tempUser = userRepository.findById(usersChats.getUserId()).orElse(null);
+                if (tempUser != null && !tempUser.getVkId().equals(vkId)) {
                     users.add(tempUser);
                 }
             }
