@@ -19,7 +19,9 @@ class ChatsAll extends React.Component {
       chats: [],
       fetching: false,
       firstInit: true,
-      chatLinkLoading: false
+      chatLinkLoading: false,
+      modalLink: '',
+      modalShowed: false
     };
     this.onRefresh = () => {this.updateChats();}
   }
@@ -52,12 +54,33 @@ class ChatsAll extends React.Component {
   }
 
   /**
+   * Отображает модалку
+   * @param link
+   */
+  showChatModal(link) {
+    this.setState({modalLink: link, modalShowed: true});
+  }
+
+  /**
    * Обработчик нажатия чата
    * @param id
    * @param link
    */
   chatClicked(id, link) {
     this.setState({chatLinkLoading: true});
+
+    if (!link) {
+      backendApi.getChatLink(id)
+        .then(link => {
+          console.log(link);
+          this.setState({chatLinkLoading: false});
+          this.showChatModal(link);
+        })
+        .catch(err => alert(err));
+    } else {
+      this.setState({chatLinkLoading: false});
+      this.showChatModal(link);
+    }
   }
 
   /**
@@ -79,14 +102,16 @@ class ChatsAll extends React.Component {
    * @returns {*[]}
    */
   renderChats() {
-    return this.state.chats.map(({ id, interest, preview, link }, i) =>
-      <Cell key={i}
-            before={<Avatar src={preview} />}
-            onClick={() => this.chatClicked(id, link)}
-      >
-         <Link>{interest}</Link>
-      </Cell>
-    );
+    if (!this.state.firstInit && !this.state.chatLinkLoading) {
+      return this.state.chats.map(({ id, interest, preview, link }, i) =>
+        <Cell key={i}
+              before={<Avatar src={preview} />}
+              onClick={() => this.chatClicked(id, link)}
+        >
+          <Link>{interest}</Link>
+        </Cell>
+      );
+    }
   }
 
   /**
@@ -105,6 +130,16 @@ class ChatsAll extends React.Component {
     }
   }
 
+  renderJoinChatLink() {
+    if (this.state.modalShowed) {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <Link href={this.state.modalLink} target={'_blank'}>Ссылка на присоедиение</Link>
+        </div>
+      )
+    }
+  }
+
   /**
    * Рендер приложения
    * @returns {*}
@@ -116,6 +151,7 @@ class ChatsAll extends React.Component {
           <Group>
             { this.renderStartSpinner() }
             { this.renderChatLink() }
+            { this.renderJoinChatLink() }
 
             <PullToRefresh onRefresh={this.onRefresh} isFetching={this.state.fetching}>
               <Group>
