@@ -70,6 +70,7 @@ public class ChatsController {
             String vkId = userRequestDto.getVkId();
             Optional<User> user = userRepository.findByVkId(vkId);
             if (!user.isPresent()) {
+                userService.translateInfo(userRequestDto);
                 userService.save(userRequestDto);
                 chatsService.createChatsForUser(userRequestDto);
             }
