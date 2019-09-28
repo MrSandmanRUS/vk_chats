@@ -150,7 +150,6 @@ class ChatsAll extends React.Component {
   render() {
     const modal = (
       <ModalRoot activeModal={this.state.modalActive}>
-
         <ModalCard
           id={'chatLink'}
           onClose={() => this.setState({modalActive: null})}

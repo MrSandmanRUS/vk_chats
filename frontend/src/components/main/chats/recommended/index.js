@@ -1,5 +1,17 @@
 import React from 'react';
-import {Panel, View, PullToRefresh, Cell, Avatar, Group, List, Spinner, Link} from "@vkontakte/vkui";
+import {
+  Panel,
+  View,
+  PullToRefresh,
+  Cell,
+  Avatar,
+  Group,
+  List,
+  Spinner,
+  Link,
+  ModalRoot,
+  ModalCard, FormLayout, FormLayoutGroup
+} from "@vkontakte/vkui";
 import backendApi from "../../../../api/backend";
 import vkApi from "../../../../api/vk_api";
 import userInfo from "../../../../helper/user_info";
@@ -20,7 +32,10 @@ class ChatsRecommended extends React.Component {
     this.state = {
       chats: [],
       fetching: false,
-      firstInit: true
+      firstInit: true,
+      chatLinkLoading: false,
+      modalLink: '',
+      modalActive: null
     };
     this.onRefresh = () => {this.updateChats();}
   }
@@ -81,6 +96,35 @@ class ChatsRecommended extends React.Component {
   }
 
   /**
+   * Отображает модалку
+   * @param link
+   */
+  showChatModal(link) {
+    this.setState({modalLink: link, modalActive: 'chatLink'});
+  }
+
+  /**
+   * Обработчик нажатия чата
+   * @param id
+   * @param link
+   */
+  chatClicked(id, link) {
+    this.setState({chatLinkLoading: true});
+
+    if (!link) {
+      backendApi.getChatLink(id)
+        .then(data => {
+          this.setState({chatLinkLoading: false});
+          this.showChatModal(data.link);
+        })
+        .catch(err => alert(err));
+    } else {
+      this.setState({chatLinkLoading: false});
+      this.showChatModal(link);
+    }
+  }
+
+  /**
    * Отрисовывает спиннер старта
    * @returns {*}
    */
@@ -101,14 +145,16 @@ class ChatsRecommended extends React.Component {
    * @returns {*[]}
    */
   renderChats() {
-    return this.state.chats.map(({ id, interest, preview, link }, i) =>
-      <Cell key={i}
-            before={<Avatar src={preview} />}
-            onClick={() => window.open(link)}
-      >
-        <Link href={link} target={'_blank'}>{interest}</Link>
-      </Cell>
-    );
+    if (!this.state.firstInit && !this.state.chatLinkLoading) {
+      return this.state.chats.map(({ id, interest, preview, link }, i) =>
+        <Cell key={i}
+              before={<Avatar src={preview} />}
+              onClick={() => this.chatClicked(id, link)}
+        >
+          <Link>{interest}</Link>
+        </Cell>
+      );
+    }
   }
 
   /**
@@ -116,11 +162,29 @@ class ChatsRecommended extends React.Component {
    * @returns {*}
    */
   render() {
+    const modal = (
+      <ModalRoot activeModal={this.state.modalActive}>
+        <ModalCard
+          id={'chatLink'}
+          onClose={() => this.setState({modalActive: null})}
+        >
+          <FormLayout>
+            <FormLayoutGroup>
+              <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                <Link href={this.state.modalLink} target={'_blank'}>Нажмите для перехода к беседе</Link>
+              </div>
+            </FormLayoutGroup>
+          </FormLayout>
+        </ModalCard>
+      </ModalRoot>
+    );
+
     return (
-      <View id={COMPONENT_NAME + 'View'} activePanel={COMPONENT_NAME + 'Panel'}>
+      <View id={COMPONENT_NAME + 'View'} activePanel={COMPONENT_NAME + 'Panel'} modal={modal}>
         <Panel id={COMPONENT_NAME + 'Panel'}>
           <Group>
             { this.renderStartSpinner() }
+            { this.renderChatLink() }
 
             <PullToRefresh onRefresh={this.onRefresh} isFetching={this.state.fetching}>
               <Group>
