@@ -1,5 +1,6 @@
 package com.shematch_team.chats.component;
 
+import com.google.common.collect.Sets;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.vk.api.sdk.actions.Messages;
@@ -22,7 +23,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class VkBot {
@@ -32,6 +35,27 @@ public class VkBot {
     private final ChatsRepository chatsRepository;
     private final VkApiClient vkApiClient;
     private final WebDriver driver;
+
+    private List<String> repostingComments = Arrays.asList(
+            "Какой интересный пост!",
+            "А что вы думаете про это?",
+            "Следите за новостями",
+            "И на рубрике дня у нас",
+            "Немножечко постов по теме беседы",
+            "Очередной репост",
+            "Такие дела",
+            "Репостну-ка я вам это",
+            "Посмотрите на этот пост",
+            "Предлагаю обсудить этот пост",
+            "Запощу очередной пост",
+            "Я бот, хочу репощу",
+            "Всем привет я бот, и я люблю репостить посты",
+            "Пост! ",
+            "Репоооост!",
+            "Новый репост поста по текущей тематике",
+            "Обсудим тему нашего чата",
+            "Вот такой пост я подобрал на нашу тему"
+    );
 
     @Autowired
     public VkBot(@Value("${config.app_id}") Integer appId,
@@ -104,7 +128,9 @@ public class VkBot {
                     vkApiClient.messages().joinChatByInviteLink(actor, chat.getLink()).execute();
                 } catch (Exception e){}
                 Thread.sleep(1000L);
-                vkApiClient.messages().send(actor).chatId(chat.getChatVkId()).randomId(RandomUtils.nextInt()).attachment(postId).execute();
+                String repostingComent = repostingComments.get(RandomUtils.nextInt(0, repostingComments.size() - 1));
+                vkApiClient.messages().send(actor).chatId(chat.getChatVkId()).randomId(RandomUtils.nextInt())
+                        .message(repostingComent).attachment(postId).execute();
                 Thread.sleep(1000);
             } catch (Exception e) {
 
