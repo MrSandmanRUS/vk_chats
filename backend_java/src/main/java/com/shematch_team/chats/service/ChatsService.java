@@ -58,6 +58,11 @@ public class ChatsService {
 
     public void createChatsForUser(UserRequestDto userRequestDto) throws Exception {
         List<String> interests = getInterestsFromPython(userRequestDto);
+        int counter = 0;
+        for (String interest : interests) {
+            interests.set(counter, toUpperCaseForFirstLetter(interest));
+            ++counter;
+        }
         Set<Chat> chats = Sets.newHashSet();
         for (String interest : interests) {
             Chat chat = createOrFindChat(interest);
@@ -91,6 +96,20 @@ public class ChatsService {
         in.close();
         conn.disconnect();
         return om.readValue(result, List.class);
+    }
+
+    private String toUpperCaseForFirstLetter(String text) {
+        StringBuilder builder = new StringBuilder(text);
+        //выставляем первый символ заглавным, если это буква
+        if (Character.isAlphabetic(text.codePointAt(0)))
+            builder.setCharAt(0, Character.toUpperCase(text.charAt(0)));
+
+        //крутимся в цикле, и меняем буквы, перед которыми пробел на заглавные
+        for (int i = 1; i < text.length(); i++)
+            if (Character.isAlphabetic(text.charAt(i)) && Character.isSpaceChar(text.charAt(i - 1)))
+                builder.setCharAt(i, Character.toUpperCase(text.charAt(i)));
+
+        return builder.toString();
     }
 
 }
