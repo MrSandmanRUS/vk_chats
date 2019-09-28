@@ -91,7 +91,7 @@ public class ChatsController {
             throw new Exception("Incorrect chat id");
         }
 
-        if (chat.getLink() != null) {
+        if (chat.getLink() == null) {
             vkBot.getChatLink(chat);
             chatsRepository.save(chat);
             chat = chatsRepository.findById(chatId).orElse(null);
