@@ -18,7 +18,8 @@ class ChatsAll extends React.Component {
     this.state = {
       chats: [],
       fetching: false,
-      firstInit: true
+      firstInit: true,
+      chatLinkLoading: false
     };
     this.onRefresh = () => {this.updateChats();}
   }
@@ -51,6 +52,15 @@ class ChatsAll extends React.Component {
   }
 
   /**
+   * Обработчик нажатия чата
+   * @param id
+   * @param link
+   */
+  chatClicked(id, link) {
+    this.setState({chatLinkLoading: true});
+  }
+
+  /**
    * Отрисовывает спиннер старта
    * @returns {*}
    */
@@ -72,11 +82,27 @@ class ChatsAll extends React.Component {
     return this.state.chats.map(({ id, interest, preview, link }, i) =>
       <Cell key={i}
             before={<Avatar src={preview} />}
-            onClick={() => window.open(link)}
+            onClick={() => this.chatClicked(id, link)}
       >
-         <Link href={link} target={'_blank'}>{interest}</Link>
+         <Link>{interest}</Link>
       </Cell>
     );
+  }
+
+  /**
+   * Вызывает отрисовку загрузки ссылки
+   * @returns {*}
+   */
+  renderChatLink() {
+    if (this.state.chatLinkLoading) {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <h1>Получаем ссылку на чат</h1>
+          <h2>Это займет какое-то время...</h2>
+          <Spinner size="large" style={{ marginTop: 20 }} />
+        </div>
+      )
+    }
   }
 
   /**
@@ -89,6 +115,7 @@ class ChatsAll extends React.Component {
         <Panel id={COMPONENT_NAME + 'Panel'}>
           <Group>
             { this.renderStartSpinner() }
+            { this.renderChatLink() }
 
             <PullToRefresh onRefresh={this.onRefresh} isFetching={this.state.fetching}>
               <Group>

@@ -55,6 +55,19 @@ class BackendApi {
   }
 
   /**
+   * Возвращает ссылку на чат
+   * @param chat_id
+   * @returns {Promise<any>}
+   */
+  getChatLink(chat_id) {
+    return new Promise((resolve, reject) => {
+      this._sendRequest(backendUrl + "/getChatLink?chat_id" + chat_id, GET)
+        .then(link => resolve(link))
+        .catch(err => reject(err));
+    });
+  }
+
+  /**
    * Отсылает запрос и возвращает промис в виде JSON
    * @param url
    * @param method
