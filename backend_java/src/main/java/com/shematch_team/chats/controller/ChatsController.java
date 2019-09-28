@@ -55,15 +55,14 @@ public class ChatsController {
             allChats = chatsRepository.findAllByIdLessThanEqualOrderByIdDesc(startId, pageable);
         }
         List<Chat> allChatsRes = new ArrayList<>();
-        int counter = 0;
+
         for (Chat chat : allChats) {
             String tempStr = toUpperCaseForFirstLetter(chat.getInterest());
             chat.setInterest(tempStr);
-            allChatsRes.set(counter, chat);
-            ++counter;
+            allChatsRes.add(chat);
         }
 
-        return ResponseEntity.ok(allChats);
+        return ResponseEntity.ok(allChatsRes);
     }
 
     @PostMapping("getRecommended")
