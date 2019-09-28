@@ -68,8 +68,8 @@ public class VkBot {
 
         driver = webDriverFactory.create().get();
         driver.get("https://www.vk.com");
-        driver.findElement(By.id("index_email")).sendKeys("krushon96@mail.ru");
-        driver.findElement(By.id("index_pass")).sendKeys("GGoWork17");
+        driver.findElement(By.id("index_email")).sendKeys("");
+        driver.findElement(By.id("index_pass")).sendKeys("");
         driver.findElement(By.id("index_login_button")).click();
         Thread.sleep(1000);
         driver.navigate().to("https://www.vk.com/im");
