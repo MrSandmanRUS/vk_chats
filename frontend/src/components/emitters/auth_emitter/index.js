@@ -25,6 +25,14 @@ class AuthEmitter extends EmitterProto {
   }
 
   /**
+   * Подписка на событие провальной авторизации
+   * @param callback
+   */
+  subscribeOnAuthFailed(callback) {
+    this.on(AUTH_FAILED, callback);
+  }
+
+  /**
    * Посылает сообщение о том, что юзер авторизован
    */
   emitAuthSuccess() {

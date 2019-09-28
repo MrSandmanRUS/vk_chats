@@ -18,33 +18,48 @@ ReactDOM.render(<MainComponent />, document.getElementById('root'));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
+let tries = 0;
+
+const authUserFunction = () => {
+  vkApi.authUser()
+    .then(data => {
+      vkApi.setAccessToken(data.access_token);
+
+      vkApi.getUserInfo()
+        .then(data => {
+          userInfo.setUserData(data);
+
+          vkApi.getUserGroups()
+            .then((groups) => {
+              userInfo.setGroupsData(groups);
+
+              authEmitter.emitAuthSuccess();
+              pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
+            })
+            .catch(err => {
+              console.error(err);
+              authEmitter.emitAuthFailed();
+            });
+        })
+        .catch(err => {
+          console.error(err);
+          authEmitter.emitAuthFailed();
+        });
+    })
+    .catch(err => {
+      console.error(err);
+      authEmitter.emitAuthFailed();
+    });
+};
+
+authEmitter.subscribeOnAuthFailed(() => {
+  if (tries === 3) {
+    alert('Авторизация провалилась!');
+  } else {
+    tries++;
+    authUserFunction();
+  }
+});
+
 //  На старте приложения посылаем авторизацию пользователя
-vkApi.authUser()
-  .then(data => {
-    vkApi.setAccessToken(data.access_token);
-
-    vkApi.getUserInfo()
-      .then(data => {
-        userInfo.setUserData(data);
-
-        vkApi.getUserGroups()
-          .then((groups) => {
-            userInfo.setGroupsData(groups);
-
-            authEmitter.emitAuthSuccess();
-            pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
-          })
-          .catch(err => {
-            console.error(err);
-            authEmitter.emitAuthFailed();
-          });
-      })
-      .catch(err => {
-        console.error(err);
-        authEmitter.emitAuthFailed();
-      });
-  })
-  .catch(err => {
-    console.error(err);
-    authEmitter.emitAuthFailed();
-  });
+authUserFunction();
