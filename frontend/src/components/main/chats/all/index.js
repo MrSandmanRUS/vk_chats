@@ -74,7 +74,7 @@ class ChatsAll extends React.Component {
             before={<Avatar src={preview} />}
             onClick={() => window.open(link)}
       >
-        Интересы: {interest} <br /> <Link href={link} target={'_blank'}><Trans>Join</Trans></Link>
+        <Trans>Interests</Trans>: {interest} <br /> <Link href={link} target={'_blank'}><Trans>Conversation</Trans></Link>
       </Cell>
     );
   }

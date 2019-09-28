@@ -13,7 +13,8 @@ const resources = {
       "Recommended Chat Title" : "Рекомендованные",
       "All Chats Title" : "Все",
       "User Info Title" : "Инфо",
-      "Join" : "Присоединиться"
+      "Conversation" : "Беседа",
+      "Interests" : "Интересы"
     }
   }
 };
