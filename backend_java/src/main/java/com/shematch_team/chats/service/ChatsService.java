@@ -3,6 +3,7 @@ package com.shematch_team.chats.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.shematch_team.chats.component.PhotoSearch;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
@@ -32,10 +33,14 @@ public class ChatsService {
 
     private final ChatsRepository chatsRepository;
 
+    private final PhotoSearch photoSearch;
+
+
     @Autowired
-    public ChatsService(UserRepository userRepository, ChatsRepository chatsRepository) {
+    public ChatsService(UserRepository userRepository, ChatsRepository chatsRepository, PhotoSearch photoSearch) {
         this.userRepository = userRepository;
         this.chatsRepository = chatsRepository;
+        this.photoSearch = photoSearch;
     }
 
     private Chat createOrFindChat(String interest) throws Exception {
@@ -43,6 +48,7 @@ public class ChatsService {
         if (chat == null) {
             chat = new Chat();
             chat.setInterest(interest.toLowerCase());
+            chat.setPreview(photoSearch.findImageByName(interest.toLowerCase()));
             chatsRepository.save(chat);
             chat = chatsRepository.findFirstByInterest(interest.toLowerCase());
         }
