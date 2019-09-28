@@ -88,6 +88,7 @@ class ChatsRecommended extends React.Component {
     if (this.state.firstInit) {
       return (
         <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <h1>Анализируем...</h1>
           <Spinner size="large" style={{ marginTop: 20 }} />
         </div>
       )
