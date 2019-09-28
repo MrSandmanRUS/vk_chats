@@ -97,8 +97,8 @@ class ChatsRecommended extends React.Component {
    * @returns {*[]}
    */
   renderChats() {
-    return this.state.chats.map(({ id, name, photo }, i) =>
-      <Cell key={i} before={<Avatar src={photo} />}>Интересы: {name}</Cell>
+    return this.state.chats.map(({ id, interest, preview, link }, i) =>
+      <Cell key={i} before={<Avatar src={preview} />} onClick={() => window.open(link)}>Интересы: {interest}</Cell>
     );
   }
 

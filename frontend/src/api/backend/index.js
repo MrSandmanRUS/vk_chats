@@ -48,11 +48,22 @@ class BackendApi {
    * @private
    */
   _sendRequest(url, method, data = null) {
-    return fetch(url, {
-      method: method,
-      headers: {'Content-Type':'application/json'},
-      body: data
-    }).then(res => res.json());
+    console.log(data);
+
+    switch(method) {
+      case POST:
+        return fetch(url, {
+          method: method,
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        }).then(res => res.json());
+      case GET:
+        return fetch(url, {
+          method: method,
+          headers: {'Content-Type':'application/json'}
+        }).then(res => res.json());
+      default: break;
+    }
   }
 }
 
