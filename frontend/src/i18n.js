@@ -16,7 +16,8 @@ const resources = {
       "User Info Title" : "Инфо",
       "Users Common Interests Title" : "Пользователи",
       "Conversation" : "Беседа",
-      "Interests" : "Интересы"
+      "Interests" : "Интересы",
+      "Profile" : "Открыть профиль"
     }
   }
 };

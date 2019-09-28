@@ -1,7 +1,8 @@
 import React from 'react';
-import {Avatar, Cell, Group, List, Panel, PullToRefresh, View, Spinner} from "@vkontakte/vkui";
+import {Avatar, Cell, Group, List, Panel, PullToRefresh, View, Spinner, Link} from "@vkontakte/vkui";
 import userInfo from "../../../../helper/user_info";
 import backendApi from "../../../../api/backend";
+import {Trans} from "react-i18next";
 
 const COMPONENT_NAME = 'UsersCommonInterests';
 
@@ -41,7 +42,11 @@ class UsersCommonInterests extends React.Component {
 
     backendApi.getLikeUser(userInfo.getUser().id)
       .then(users => {
-        console.log(users);
+        for(let i = 0; i < users.length; i++) {
+          users[i].info = JSON.parse(users[i].info);
+          users[i].link = 'https://vk.com/id' + users[i].id;
+          users[i].name = users[i].info.first_name + users[i].info.last_name;
+        }
         this.setState({
           users: users,
           fetching: false,
@@ -66,6 +71,20 @@ class UsersCommonInterests extends React.Component {
   }
 
   /**
+   * Отрисовка списка пользователей
+   */
+  renderUsers() {
+    return this.state.chats.map(({ id, avatar, name, link }, i) =>
+      <Cell key={i}
+            before={<Avatar src={avatar} />}
+            onClick={() => window.open(link)}
+      >
+        {name} <br /> <Link href={link} target={'_blank'}><Trans>Profile</Trans></Link>
+      </Cell>
+    );
+  }
+
+  /**
    * Метод отрисовки
    * @returns {*}
    */
@@ -79,7 +98,7 @@ class UsersCommonInterests extends React.Component {
             <PullToRefresh onRefresh={this.onRefresh} isFetching={this.state.fetching}>
               <Group>
                 <List>
-
+                  {this.renderUsers()}
                 </List>
               </Group>
             </PullToRefresh>
