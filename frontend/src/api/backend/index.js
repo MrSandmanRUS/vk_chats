@@ -63,8 +63,6 @@ class BackendApi {
    * @private
    */
   _sendRequest(url, method, data = null) {
-    console.log(data);
-
     switch(method) {
       case POST:
         return fetch(url, {

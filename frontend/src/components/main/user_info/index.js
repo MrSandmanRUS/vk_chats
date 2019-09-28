@@ -46,6 +46,7 @@ class UserInfo extends React.Component {
     return {
       first_name: user.first_name,
       last_name: user.last_name,
+      avatar: user.avatar,
       born_date: user.bday,
       city: user.city,
       country: user.country,
@@ -69,7 +70,7 @@ class UserInfo extends React.Component {
         for(let i = 0; i < chats.length; i++) {
           interests += chats[i].interest;
           if (i !== (chats.length - 1)) {
-            interests += ',';
+            interests += ', ';
           }
         }
 
