@@ -29,7 +29,7 @@ public class PhotoSearch {
                     break;
                 }
                 String protocol = res_link.substring(0, 5);
-                if (protocol.equals("https")) {
+                if (protocol.equals("https") && !res_link.contains("fotocdn")) {
                     link = res_link;
                     break;
                 } else {
