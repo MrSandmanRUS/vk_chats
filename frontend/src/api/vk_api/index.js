@@ -1,5 +1,5 @@
 import connect from '@vkontakte/vk-connect';
-import {VK_ID, VK_SCOPE} from "../../environments/vk_config";
+import {VK_API_VERSION, VK_ID, VK_SCOPE} from "../../environments/vk_config";
 
 /**
  * Доступ к апи вк
@@ -55,6 +55,30 @@ class VkApi {
       this._sendMethod('VKWebAppGetUserInfo', {})
         .then(data => resolve(data))
         .catch(err => reject(err));
+    });
+  }
+
+  /**
+   * Возвращает группы пользователя
+   * @returns {Promise<any>}
+   */
+  getUserGroups(count = 1000) {
+    return new Promise((resolve, reject) => {
+      if (this._accessToken === '') reject('Not auth');
+      else {
+        this._sendMethod('VKWebAppCallAPIMethod', {
+          "method": "groups.get",
+          "request_id": "getUserGroups",
+          "params": {
+            "extended": 1,
+            "v": VK_API_VERSION,
+            "access_token": this._accessToken,
+            "count": count
+          }
+        })
+          .then(data => resolve(data))
+          .catch(err => reject(err));
+      }
     });
   }
 

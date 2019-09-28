@@ -21,7 +21,7 @@ serviceWorker.unregister();
 //  На старте приложения посылаем авторизацию пользователя
 vkApi.authUser()
   .then(data => {
-    vkApi.setAccessToken(data.token);
+    vkApi.setAccessToken(data.access_token);
 
     vkApi.getUserInfo()
       .then(data => {
