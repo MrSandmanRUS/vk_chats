@@ -1,5 +1,6 @@
 import React from 'react';
 import {Avatar, Cell, Group, List, Panel, PullToRefresh, Spinner, View} from "@vkontakte/vkui";
+import backendApi from "../../../../api/backend";
 
 const COMPONENT_NAME = 'ChatsAll';
 
@@ -37,21 +38,17 @@ class ChatsAll extends React.Component {
       fetching: true
     });
 
-    setTimeout(() => {
+    backendApi.getAllChats()
+      .then(chats => console.log(chats))
+      .catch(err => console.error(err));
+
+    /*setTimeout(() => {
       this.setState({
         chats: [{id: 1, name: "Название интересов через зпт", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png', link: 'https://google.ru'}, ...this.state.chats],
         fetching: false,
         firstInit: false
       });
-    }, 3000);
-  }
-
-  /**
-   * Открывает указанную ссылку
-   * @param link
-   */
-  openLink(link) {
-    window.open(link);
+    }, 3000);*/
   }
 
   /**
