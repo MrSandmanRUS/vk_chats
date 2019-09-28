@@ -39,7 +39,7 @@ class ChatsAll extends React.Component {
 
     setTimeout(() => {
       this.setState({
-        chats: [{id: 1, name: "Пиво, водка, пиво", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png'}, ...this.state.chats],
+        chats: [{id: 1, name: "Название интересов через зпт", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png'}, ...this.state.chats],
         fetching: false,
         firstInit: false
       });

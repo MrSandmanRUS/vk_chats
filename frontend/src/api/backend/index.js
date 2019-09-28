@@ -3,9 +3,7 @@
 //
 
 class BackendApi {
-  constructor() {
 
-  }
 }
 
 const backendApi = new BackendApi();
