@@ -34,8 +34,8 @@ public class VkBot {
                 "scope=messages,offline&" +
                 "response_type=code&" +
                 "v=5.101");
-        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[6]")).sendKeys("some");
-        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[7]")).sendKeys("some");
+        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[6]")).sendKeys("1");
+        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[7]")).sendKeys("1");
         webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/button")).click();
         try {
             WebElement element = webDriver.findElement(By.xpath("/html/body/div/div/div/div[3]/div/div[1]/button[1]"));
@@ -55,10 +55,10 @@ public class VkBot {
         messages = vk.messages();
     }
 
-    public void createChat(Chat chat) throws Exception {
+    public String getChatLink(Chat chat) throws Exception {
         String interest = chat.getInterest();
         int chatId = messages.createChat(actor).title(interest).execute();
         String link = messages.getInviteLink(actor, 2000000000 + chatId).execute().getLink();
-        chat.setLink(link);
+        return link;
     }
 }

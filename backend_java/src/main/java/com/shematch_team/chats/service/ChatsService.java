@@ -1,15 +1,14 @@
 package com.shematch_team.chats.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.shematch_team.chats.component.PhotoSearch;
+import com.shematch_team.chats.component.VkBot;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.shematch_team.chats.repository.UserRepository;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -35,12 +32,14 @@ public class ChatsService {
 
     private final PhotoSearch photoSearch;
 
+    private final VkBot vkBot;
 
     @Autowired
-    public ChatsService(UserRepository userRepository, ChatsRepository chatsRepository, PhotoSearch photoSearch) {
+    public ChatsService(UserRepository userRepository, ChatsRepository chatsRepository, PhotoSearch photoSearch, VkBot vkBot) {
         this.userRepository = userRepository;
         this.chatsRepository = chatsRepository;
         this.photoSearch = photoSearch;
+        this.vkBot = vkBot;
     }
 
     private Chat createOrFindChat(String interest) throws Exception {
@@ -49,6 +48,7 @@ public class ChatsService {
             chat = new Chat();
             chat.setInterest(interest.toLowerCase());
             chat.setPreview(photoSearch.findImageByName(interest.toLowerCase()));
+            chat.setLink(vkBot.getChatLink(chat));
             chatsRepository.save(chat);
             chat = chatsRepository.findFirstByInterest(interest.toLowerCase());
         }
