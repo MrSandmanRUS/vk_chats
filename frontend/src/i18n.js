@@ -10,9 +10,9 @@ const resources = {
   ru: {
     translation: {
       "Init": "Инициализация приложения",
-      "Recommended Chat Title" : "Рекомендованные чаты",
-      "All Chats Title" : "Все чаты",
-      "User Info Title" : "Информация о пользователе"
+      "Recommended Chat Title" : "Рекомендованные",
+      "All Chats Title" : "Все",
+      "User Info Title" : "Инфо"
     }
   }
 };

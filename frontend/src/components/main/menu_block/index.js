@@ -2,6 +2,7 @@ import React from 'react';
 import {FixedLayout, Tabs, HorizontalScroll, TabsItem} from "@vkontakte/vkui";
 import pageEmitter from "../../emitters/pages_emitter";
 import {PAGE_CHATS_ALL, PAGE_CHATS_RECOMMENDED, PAGE_USER_INFO} from "../index";
+import {Trans} from "react-i18next";
 
 const TAB_RECOMMENDED = 'tab_recommended';
 const TAB_ALL = 'tab_all';
@@ -45,19 +46,19 @@ class MenuBlock extends React.Component {
               onClick={() => this.setTab(TAB_RECOMMENDED)}
               selected={this.props.pageId === PAGE_CHATS_RECOMMENDED}
             >
-              Рекомендованные чаты
+              <Trans>Recommended Chat Title</Trans>
             </TabsItem>
             <TabsItem
               onClick={() => this.setTab(TAB_ALL)}
               selected={this.props.pageId === PAGE_CHATS_ALL}
             >
-              Все чаты
+              <Trans>All Chats Title</Trans>
             </TabsItem>
             <TabsItem
               onClick={() => this.setTab(TAB_USER)}
               selected={this.props.pageId === PAGE_USER_INFO}
             >
-              Информация о пользователе
+              <Trans>User Info Title</Trans>
             </TabsItem>
           </HorizontalScroll>
         </Tabs>
