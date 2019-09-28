@@ -11,8 +11,7 @@ morphy_analyzer = MorphAnalyzer()
 
 
 def most_chats(json_obj, numb_top):
-    input_txt = json_obj
-    text = ' '.join(input_txt)
+    text = ' '.join(json_obj)
     formatted_text = re.sub('[^a-zа-яА-ЯA-Zё]', ' ', text)
     formatted_text = re.sub(r'\b\w\b', ' ', formatted_text)
     formatted_text = re.sub(r'\s+', ' ', formatted_text)
@@ -32,8 +31,7 @@ def generate_synonyms(top_charts, model, numb_syn):
     generated_words = []
     for word in top_charts:
         try:
-            synoms = [i for i, j in model.most_similar(word, topn=numb_syn)]
-            generated_words.extend(synoms)
+            generated_words.extend([i for i, j in model.most_similar(word, topn=numb_syn)])
         except KeyError:
             continue
     return generated_words
