@@ -82,14 +82,14 @@ public class ChatsController {
     }
 
 
-    @PostMapping("getLikeUser")
+    @GetMapping("getLikeUser")
     public ResponseEntity<Set<User>> getLikeUser(@RequestParam("vk_id") String vkId,
                                                  @RequestParam("start_id") Long startId,
                                                  @RequestParam("page") Integer page) throws Exception {
         Optional<User> user = userRepository.findByVkId(vkId);
         HashSet<User> users = new HashSet<>();
 
-        if (!user.isPresent()) {
+        if (user.isPresent()) {
             User curUser = user.orElse(null);
 
             PageRequest pageable = new PageRequest(page, 20);
