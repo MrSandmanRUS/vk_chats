@@ -6,6 +6,7 @@ import MenuBlock from "./menu_block";
 import ChatsRecommended from "./chats/recommended";
 import ChatsAll from "./chats/all";
 import UserInfo from "./user_info";
+import UsersCommonInterests from "./users/common";
 
 //  Страница инициализации
 export const PAGE_INIT = 'init';
@@ -15,6 +16,8 @@ export const PAGE_CHATS_RECOMMENDED = 'chats_recommended';
 export const PAGE_CHATS_ALL = 'chats_all';
 //  Страница с инфой по юзеру
 export const PAGE_USER_INFO = 'user_info';
+//  Страница с юзерами похожими интересами
+export const PAGE_USERS_COMMON = 'users_common';
 
 /**
  * Основной компонент приложения
@@ -44,6 +47,7 @@ class MainComponent extends React.Component {
       case PAGE_CHATS_RECOMMENDED: this.setChatsRecommenedPage(); break;
       case PAGE_CHATS_ALL: this.setChatsAllPage(); break;
       case PAGE_USER_INFO: this.setUserInfoPage(); break;
+      case PAGE_USERS_COMMON: this.setUsersCommonPage(); break;
 
       default: break;
     }
@@ -73,6 +77,15 @@ class MainComponent extends React.Component {
   setUserInfoPage() {
     this.setState({
       page : PAGE_USER_INFO
+    });
+  }
+
+  /**
+   * Задает страницу с пользователями у которых похожие интересы
+   */
+  setUsersCommonPage() {
+    this.setState({
+      page: PAGE_USERS_COMMON
     });
   }
 
@@ -116,6 +129,15 @@ class MainComponent extends React.Component {
             <MenuBlock pageId={PAGE_USER_INFO} />
 
             <UserInfo />
+          </Panel>
+        </View>
+
+        <View id={PAGE_USERS_COMMON} activePanel={PAGE_USERS_COMMON + '1'}>
+          <Panel id={PAGE_USERS_COMMON + '1'}>
+            <PanelHeader><Trans>Users Common Interests Title</Trans></PanelHeader>
+            <MenuBlock pageId={PAGE_USERS_COMMON} />
+
+            <UsersCommonInterests />
           </Panel>
         </View>
       </Root>

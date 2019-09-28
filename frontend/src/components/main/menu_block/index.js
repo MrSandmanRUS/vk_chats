@@ -1,12 +1,13 @@
 import React from 'react';
 import {FixedLayout, Tabs, HorizontalScroll, TabsItem} from "@vkontakte/vkui";
 import pageEmitter from "../../emitters/pages_emitter";
-import {PAGE_CHATS_ALL, PAGE_CHATS_RECOMMENDED, PAGE_USER_INFO} from "../index";
+import {PAGE_CHATS_ALL, PAGE_CHATS_RECOMMENDED, PAGE_USER_INFO, PAGE_USERS_COMMON} from "../index";
 import {Trans} from "react-i18next";
 
 const TAB_RECOMMENDED = 'tab_recommended';
 const TAB_ALL = 'tab_all';
 const TAB_USER = 'tab_user';
+const TAB_USERS_COMMON = 'tab_users_common';
 
 /**
  * Блок меню
@@ -29,6 +30,7 @@ class MenuBlock extends React.Component {
       case TAB_RECOMMENDED: pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED); break;
       case TAB_ALL: pageEmitter.emitPageChanged(PAGE_CHATS_ALL); break;
       case TAB_USER: pageEmitter.emitPageChanged(PAGE_USER_INFO); break;
+      case TAB_USERS_COMMON: pageEmitter.emitPageChanged(PAGE_USERS_COMMON); break;
       default: break;
     }
   }
@@ -53,6 +55,12 @@ class MenuBlock extends React.Component {
               selected={this.props.pageId === PAGE_CHATS_ALL}
             >
               <Trans>All Chats Title</Trans>
+            </TabsItem>
+            <TabsItem
+              onClick={() => this.setTab(TAB_USERS_COMMON)}
+              selected={this.props.pageId === PAGE_USERS_COMMON}
+            >
+              <Trans>Users Common Interests Title</Trans>
             </TabsItem>
             <TabsItem
               onClick={() => this.setTab(TAB_USER)}
