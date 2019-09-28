@@ -74,7 +74,7 @@ class UsersCommonInterests extends React.Component {
    * Отрисовка списка пользователей
    */
   renderUsers() {
-    return this.state.chats.map(({ id, avatar, name, link }, i) =>
+    return this.state.users.map(({ id, avatar, name, link }, i) =>
       <Cell key={i}
             before={<Avatar src={avatar} />}
             onClick={() => window.open(link)}
