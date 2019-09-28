@@ -149,7 +149,9 @@ class ChatsAll extends React.Component {
   render() {
     const modal = (
       <ModalRoot activeModal={this.state.modalActive}>
-        <ModalPage id={'chatLink'}>
+        <ModalPage id={'chatLink'}
+                   settlingHeight={80}
+        >
           <FormLayout>
             <FormLayoutGroup>
               <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
