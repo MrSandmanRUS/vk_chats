@@ -17,7 +17,7 @@ create table chats (
                        interest varchar(512),
                        preview varchar(1024),
                        link varchar(1024),
-					   chat_vk_id bigint,
+                       chat_vk_id bigint,
                        primary key (id),
                        unique (interest)
 );
