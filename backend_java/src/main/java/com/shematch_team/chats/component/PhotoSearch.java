@@ -16,14 +16,14 @@ public class PhotoSearch {
     public String findImageByName(String imgName) {
 
         WebDriver driver = chatsWebDriver.get();
-
-        String url = "https://go.mail.ru/search_images?q=" + imgName + "&fm=1#urlhash=0";
-        driver.get(url);
-        String link = driver.getPageSource();
-        link = link.substring(link.indexOf("\"imUrl\": \"") + 10);
-        link = link.substring(0, link.indexOf("\""));
-
-        return link;
+        synchronized (driver) {
+            String url = "https://go.mail.ru/search_images?q=" + imgName + "&fm=1#urlhash=0";
+            driver.get(url);
+            String link = driver.getPageSource();
+            link = link.substring(link.indexOf("\"imUrl\": \"") + 10);
+            link = link.substring(0, link.indexOf("\""));
+            return link;
+        }
     }
 }
 
