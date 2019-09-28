@@ -6,9 +6,11 @@ import com.shematch_team.chats.component.Translator;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.User;
 import com.shematch_team.chats.repository.UserRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -26,15 +28,18 @@ public class UserService {
 
     public void save(UserRequestDto userRequestDto) throws JsonProcessingException {
         User user = new User();
-        Map<String, Object> info = userRequestDto.getInfo();
+        JSONObject info = userRequestDto.getInfo();
         user.setInfo(om.writeValueAsString(info));
         user.setVkId(userRequestDto.getVkId());
         userRepository.save(user);
     }
 
-    public void translateInfo(UserRequestDto userRequestDto) {
-        Map<String, Object> info = userRequestDto.getInfo();
-        translateInfoForMap(info);
+    public void translateInfo(UserRequestDto userRequestDto) throws IOException {
+        JSONObject info = userRequestDto.getInfo();
+        String infoString = om.writeValueAsString(info);
+        String translated = translator.getFromYandexService(infoString).get();
+        JSONObject translatedObject = new JSONObject(translated.replace("\n","").replace("\r",""));
+        userRequestDto.setInfo(translatedObject);
     }
 
     private void translateInfoForMap(Map<String, Object> info) {

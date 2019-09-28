@@ -7,10 +7,11 @@ import com.shematch_team.chats.repository.TranslatesRepository;
 import com.shematch_team.chats.service.TranslateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -40,7 +41,7 @@ public class Translator {
             "first_name","last_name","city","groups","country","born_date"
     );
 
-    public String translateJson(String json) throws UnsupportedEncodingException {
+    public String translateJson(String json) throws Exception {
         Matcher matcher = pattern.matcher(json);
         List<String> englishWords = new ArrayList<>();
         while (matcher.find()) {
@@ -49,9 +50,9 @@ public class Translator {
                 englishWords.add(englishWord);
             }
         }
-        String englishWordsToTranslate = Joiner.on("-").join(englishWords);
+        String englishWordsToTranslate = Joiner.on(" ").join(englishWords);
         String translation = getFromYandexService(englishWordsToTranslate).get();
-        List<String> translated = Arrays.asList(translation.split("-"));
+        List<String> translated = Arrays.asList(translation.split("\\s"));
 
         Matcher matcherSecond = pattern.matcher(json);
         StringBuffer bufferSecond = new StringBuffer();
@@ -66,32 +67,27 @@ public class Translator {
                 matcherSecond.appendReplacement(bufferSecond, group);
             }
         }
+        matcherSecond.appendTail(bufferSecond);
         return bufferSecond.toString();
     }
 
-    public Optional<String> translateToRussian(String englishWord) throws UnsupportedEncodingException {
-        //todo safe synchronization on english word string
-        Optional<String> russianWordFromDb = translateService.getByEnglish(englishWord);
-        if (russianWordFromDb.isPresent()) {
-            return russianWordFromDb;
-        } else {
-            Optional<String> russianWord;
-            russianWord = getFromYandexService(englishWord);
-            return russianWord;
-        }
-    }
-
-
-    private Optional<String> getFromYandexService(String englishWord) throws UnsupportedEncodingException {
+    public Optional<String> getFromYandexService(String englishWord) throws UnsupportedEncodingException {
         RestTemplate restTemplate = new RestTemplate();
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(YAPI_RESOURCE)
                 .queryParam("key", YAPI_KEY)
-                .queryParam("text", URLEncoder.encode(englishWord, "UTF-8"))
                 .queryParam("lang", "en-ru")
                 .queryParam("format", "plain");
 
-        ResponseEntity<TranslateResponseDto> response = restTemplate.getForEntity(builder.toUriString(),
-                TranslateResponseDto.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+// if you need to pass form parameters in request with headers.
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("text", englishWord);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<TranslateResponseDto> response = restTemplate.postForEntity(builder.toUriString(),
+               request, TranslateResponseDto.class);
         List<String> translates = response.getBody().getText();
         return response.getStatusCode().equals(HttpStatus.OK) && !CollectionUtils.isEmpty(translates) ?
                 Optional.of(translates.get(0)) : Optional.empty();

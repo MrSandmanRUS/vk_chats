@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -24,6 +25,6 @@ public class UserRequestDto {
     private String ip;
 
     @JsonProperty("info")
-    private Map<String, Object> info;
+    private JSONObject info;
 
 }
