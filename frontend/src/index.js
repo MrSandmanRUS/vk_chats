@@ -27,8 +27,17 @@ vkApi.authUser()
       .then(data => {
         userInfo.setUserData(data);
 
-        authEmitter.emitAuthSuccess();
-        pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
+        vkApi.getUserGroups()
+          .then((groups) => {
+            userInfo.setGroupsData(groups);
+
+            authEmitter.emitAuthSuccess();
+            pageEmitter.emitPageChanged(PAGE_CHATS_RECOMMENDED);
+          })
+          .catch(err => {
+            console.error(err);
+            authEmitter.emitAuthFailed();
+          });
       })
       .catch(err => {
         console.error(err);

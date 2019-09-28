@@ -1,5 +1,8 @@
 import React from 'react';
 import {Panel, View, PullToRefresh, Cell, Avatar, Group, List, Spinner} from "@vkontakte/vkui";
+import backendApi from "../../../../api/backend";
+import vkApi from "../../../../api/vk_api";
+import userInfo from "../../../../helper/user_info";
 
 const COMPONENT_NAME = 'ChatsRecommended';
 
@@ -30,6 +33,29 @@ class ChatsRecommended extends React.Component {
   }
 
   /**
+   * Возвращает информационную модель
+   * @returns {{country: {id: number; title: string} | Boolean.country | {id: number; name: string} | string | string, city: {id: number; title: string} | Boolean.city | {id: number; name: string} | string | string, last_name: string | Boolean.last_name | string, groups: Array, first_name: string | Boolean.first_name | string, born_date: string}}
+   */
+  generateInfo() {
+    const user = userInfo.getUser();
+    const groups_list = userInfo.getGroups();
+
+    let groups = [];
+    for(let i = 0; i < groups_list.length; i++) {
+      groups.push(groups_list[i].name);
+    }
+
+    return {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      born_date: user.bday,
+      city: user.city,
+      country: user.country,
+      groups: groups
+    };
+  }
+
+  /**
    * Обновляет список чатов
    */
   updateChats() {
@@ -37,13 +63,19 @@ class ChatsRecommended extends React.Component {
       fetching: true
     });
 
-    setTimeout(() => {
-      this.setState({
-        chats: [{id: 1, name: "Пиво, водка, пиво", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png'}, ...this.state.chats],
-        fetching: false,
-        firstInit: false
-      });
-    }, 3000);
+    backendApi.getRecommendedChats(
+      vkApi.getAccessToken(),
+      userInfo.getUser().id,
+      this.generateInfo()
+    )
+      .then((chats) => {
+        this.setState({
+          chats: chats,
+          fetching: false,
+          firstInit: false
+        });
+      })
+      .catch(err => alert(err));
   }
 
   /**

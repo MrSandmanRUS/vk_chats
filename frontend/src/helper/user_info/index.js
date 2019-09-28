@@ -7,6 +7,7 @@ class UserInfo {
    */
   constructor() {
     this._user = {
+      id: 0,
       first_name: '',
       last_name: '',
       avatar: '',
@@ -38,6 +39,7 @@ class UserInfo {
    * @param data
    */
   setUserData(data) {
+    if (data.id) this._user.id = data.id;
     if (data.first_name) this._user.first_name = data.first_name;
     if (data.last_name) this._user.last_name = data.last_name;
     if (data.photo_max_orig) this._user.avatar = data.photo_max_orig;
@@ -51,9 +53,7 @@ class UserInfo {
    * @param data
    */
   setGroupsData(data) {
-    this._groups = [];
-
-
+    this._groups = data.response.items;
   }
 }
 
