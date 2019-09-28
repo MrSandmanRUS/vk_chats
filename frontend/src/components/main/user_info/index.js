@@ -1,27 +1,21 @@
 import React from 'react';
-import {Group, Cell, Button, Avatar, View, Panel} from "@vkontakte/vkui";
+import {Group, Cell, Avatar, View, Panel} from "@vkontakte/vkui";
 import userInfo from "../../../helper/user_info";
+
+const COMPONENT_NAME = 'UserInfo';
 
 /**
  * Компонент с инфой по юзеру
  */
 class UserInfo extends React.Component {
   /**
-   * Конструктор класса
-   * @param props
-   */
-  constructor(props) {
-    super(props);
-  }
-
-  /**
    * Рендер приложения
    * @returns {*}
    */
   render() {
     return (
-      <View id={'UserInfoView'} activePanel={'UserInfoPanel'}>
-        <Panel id={'UserInfoPanel'}>
+      <View id={COMPONENT_NAME + 'View'} activePanel={COMPONENT_NAME + 'Panel'}>
+        <Panel id={COMPONENT_NAME + 'Panel'}>
           <Group title="User Info">
             <Cell
               photo={userInfo.getUser().avatar}
@@ -34,7 +28,6 @@ class UserInfo extends React.Component {
           </Group>
         </Panel>
       </View>
-
     );
   }
 }

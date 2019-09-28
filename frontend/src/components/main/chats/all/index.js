@@ -1,4 +1,7 @@
 import React from 'react';
+import {Panel, View} from "@vkontakte/vkui";
+
+const COMPONENT_NAME = 'ChatsAll';
 
 /**
  * Компонент со всеми чатами
@@ -10,6 +13,9 @@ class ChatsAll extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.state = {
+      chats: []
+    };
   }
 
   /**
@@ -18,9 +24,11 @@ class ChatsAll extends React.Component {
    */
   render() {
     return (
-      <div>
+      <View id={COMPONENT_NAME + 'View'} activePanel={COMPONENT_NAME + 'Panel'}>
+        <Panel id={COMPONENT_NAME + 'Panel'}>
 
-      </div>
+        </Panel>
+      </View>
     );
   }
 }
