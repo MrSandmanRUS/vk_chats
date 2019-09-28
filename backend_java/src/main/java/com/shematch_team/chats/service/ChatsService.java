@@ -77,7 +77,7 @@ public class ChatsService {
 
 
     private List<String> getInterestsFromPython(UserRequestDto userRequestDto) throws IOException {
-        String info = om.writeValueAsString(userRequestDto.getInfo());
+        String info = userRequestDto.getInfoJson().toString();
         String query = "http://127.0.0.1:81/getInterest";
         URL url = new URL(query);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

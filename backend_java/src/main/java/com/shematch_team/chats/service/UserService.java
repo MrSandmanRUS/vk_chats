@@ -28,18 +28,18 @@ public class UserService {
 
     public void save(UserRequestDto userRequestDto) throws JsonProcessingException {
         User user = new User();
-        JSONObject info = userRequestDto.getInfo();
-        user.setInfo(om.writeValueAsString(info));
+        JSONObject info = userRequestDto.getInfoJson();
+        user.setInfo(info.toString());
         user.setVkId(userRequestDto.getVkId());
         userRepository.save(user);
     }
 
     public void translateInfo(UserRequestDto userRequestDto) throws IOException {
-        JSONObject info = userRequestDto.getInfo();
+        Map<String, Object> info = userRequestDto.getInfo();
         String infoString = om.writeValueAsString(info);
         String translated = translator.getFromYandexService(infoString).get();
         JSONObject translatedObject = new JSONObject(translated.replace("\n","").replace("\r",""));
-        userRequestDto.setInfo(translatedObject);
+        userRequestDto.setInfoJson(translatedObject);
     }
 
     private void translateInfoForMap(Map<String, Object> info) {
