@@ -10,6 +10,7 @@ import com.shematch_team.chats.service.ChatsService;
 import com.shematch_team.chats.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class ChatsController {
@@ -37,7 +39,7 @@ public class ChatsController {
     }
 
     @GetMapping("getAll")
-    public List<Chat> getAll(@RequestParam("start_id") Long startId,
+    public ResponseEntity<List<Chat>> getAll(@RequestParam("start_id") Long startId,
                              @RequestParam("page") Integer page) {
         PageRequest pageable = new PageRequest(page, 20);
         List<Chat> allChats;
@@ -46,25 +48,24 @@ public class ChatsController {
         } else {
             allChats = chatsRepository.findAllByIdLessThanEqualOrderByIdDesc(startId, pageable);
         }
-        return allChats;
+        return ResponseEntity.ok(allChats);
     }
 
-    @PostMapping("/getRecommended")
-    public List<Chat> getRecommended(@RequestBody UserRequestDto userRequestDto) throws Exception {
+    @PostMapping("getRecommended")
+    public ResponseEntity<Set<Chat>> getRecommended(@RequestBody UserRequestDto userRequestDto) throws Exception {
         String vkId = userRequestDto.getVkId();
         Optional<User> user = userRepository.findByVkId(vkId);
         if (!user.isPresent()) {
             userService.save(userRequestDto);
             chatsService.createChatsForUser(userRequestDto);
         }
-        return getRecommendedChats(userRequestDto);
+        return ResponseEntity.ok(getRecommendedChats(userRequestDto));
     }
 
-    private List<Chat> getRecommendedChats(UserRequestDto userRequestDto) {
+    private Set<Chat> getRecommendedChats(UserRequestDto userRequestDto) {
         String vkId = userRequestDto.getVkId();
         Optional<User> user = userRepository.findByVkId(vkId);
-        List<Chat> recommendedChats = new ArrayList<>(user.get().getChats());
-        return recommendedChats;
+        return user.get().getChats();
     }
 
 
