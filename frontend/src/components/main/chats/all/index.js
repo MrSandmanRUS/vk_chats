@@ -39,11 +39,19 @@ class ChatsAll extends React.Component {
 
     setTimeout(() => {
       this.setState({
-        chats: [{id: 1, name: "Название интересов через зпт", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png'}, ...this.state.chats],
+        chats: [{id: 1, name: "Название интересов через зпт", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png', link: 'https://google.ru'}, ...this.state.chats],
         fetching: false,
         firstInit: false
       });
     }, 3000);
+  }
+
+  /**
+   * Открывает указанную ссылку
+   * @param link
+   */
+  openLink(link) {
+    window.open(link);
   }
 
   /**
@@ -65,8 +73,8 @@ class ChatsAll extends React.Component {
    * @returns {*[]}
    */
   renderChats() {
-    return this.state.chats.map(({ id, name, photo }, i) =>
-      <Cell key={i} before={<Avatar src={photo} />}>Интересы: {name}</Cell>
+    return this.state.chats.map(({ id, name, photo, link }, i) =>
+      <Cell key={i} before={<Avatar src={photo} />} onClick={() => window.open(link)}>Интересы: {name}</Cell>
     );
   }
 
