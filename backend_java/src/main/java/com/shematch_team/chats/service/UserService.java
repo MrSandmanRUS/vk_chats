@@ -69,7 +69,7 @@ public class UserService {
         String[] wordsArray = words.split("[\\s,\\.:\\-_#\\{\\}\\[\\]]");
         for (String word : wordsArray) {
             if (isEnglish(word)) {
-                Optional<String> russian = translator.translateToRussian(word);
+                Optional<String> russian = Optional.empty();// = translator.translateToRussian(word);
                 if (russian.isPresent()) {
                     translatedWordsBuilder.append(russian.get());
                 } else {
