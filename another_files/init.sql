@@ -33,8 +33,8 @@ create table users_chats (
 );
 ALTER TABLE users_chats CONVERT TO CHARACTER SET utf8mb4;
 
-alter table users_chats add index users_chats_user_id_inx(chat_id);
 alter table users_chats add index users_chats_user_id_inx(user_id);
+alter table users_chats add index users_chats_chat_id_inx(chat_id);
 
 insert into user (avatar, vk_id) values ("Avatar1","3");
 insert into user (avatar, vk_id) values ("Avatar2","231");
