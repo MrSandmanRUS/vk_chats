@@ -39,8 +39,12 @@ class ChatsAll extends React.Component {
     });
 
     backendApi.getAllChats()
-      .then(chats => console.log(chats))
-      .catch(err => console.error(err));
+      .then(chats => this.setState({
+        chats: chats,
+        fetching: false,
+        firstInit: false
+      }))
+      .catch(err => alert(err));
 
     /*setTimeout(() => {
       this.setState({
@@ -70,8 +74,8 @@ class ChatsAll extends React.Component {
    * @returns {*[]}
    */
   renderChats() {
-    return this.state.chats.map(({ id, name, photo, link }, i) =>
-      <Cell key={i} before={<Avatar src={photo} />} onClick={() => window.open(link)}>Интересы: {name}</Cell>
+    return this.state.chats.map(({ id, interest, preview, link }, i) =>
+      <Cell key={i} before={<Avatar src={preview} />} onClick={() => window.open(link)}>Интересы: {interest}</Cell>
     );
   }
 
