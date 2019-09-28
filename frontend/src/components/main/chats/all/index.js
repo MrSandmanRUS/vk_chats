@@ -11,7 +11,8 @@ import {
   PullToRefresh,
   Spinner,
   View,
-  FormLayout
+  FormLayout,
+  ModalCard
 } from "@vkontakte/vkui";
 import backendApi from "../../../../api/backend";
 import {Trans} from "react-i18next";
@@ -149,8 +150,10 @@ class ChatsAll extends React.Component {
   render() {
     const modal = (
       <ModalRoot activeModal={this.state.modalActive}>
-        <ModalPage id={'chatLink'}
-                   settlingHeight={80}
+
+        <ModalCard
+          id={'chatLink'}
+          onClose={() => this.setState({modalActive: null})}
         >
           <FormLayout>
             <FormLayoutGroup>
@@ -159,7 +162,7 @@ class ChatsAll extends React.Component {
               </div>
             </FormLayoutGroup>
           </FormLayout>
-        </ModalPage>
+        </ModalCard>
       </ModalRoot>
     );
 
