@@ -26,7 +26,7 @@ class BackendApi {
    */
   getAllChats(page = 0, offset = -1) {
     return new Promise((resolve, reject) => {
-      this._sendRequest(backendUrl + "/getAll?page=" + page + "&offset=" + offset, GET)
+      this._sendRequest(backendUrl + "/getAll?page=" + page + "&start_id=" + offset, GET)
         .then(chats => resolve(chats))
         .catch(err => reject(err));
     });

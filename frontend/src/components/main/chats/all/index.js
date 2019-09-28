@@ -38,21 +38,15 @@ class ChatsAll extends React.Component {
       fetching: true
     });
 
-    /*backendApi.getAllChats()
-      .then(chats => this.setState({
-        chats: chats,
-        fetching: false,
-        firstInit: false
-      }))
-      .catch(err => alert(err));*/
-
-    setTimeout(() => {
-      this.setState({
-        chats: [{id: 1, name: "Название интересов через зпт", photo: 'https://image.flaticon.com/icons/png/512/108/108331.png', link: 'https://google.ru'}, ...this.state.chats],
-        fetching: false,
-        firstInit: false
-      });
-    }, 3000);
+    backendApi.getAllChats()
+      .then(chats => {
+        this.setState({
+          chats: chats,
+          fetching: false,
+          firstInit: false
+        });
+      })
+      .catch(err => alert(err));
   }
 
   /**
