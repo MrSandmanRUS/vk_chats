@@ -20,7 +20,12 @@ public class ChatsWebDriver {
     public ChatsWebDriver(@Value("${config.selenium_path}") String seleniumPath) {
         System.setProperty("webdriver.chrome.driver", seleniumPath);
         ChromeOptions options = new ChromeOptions();
+
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
         options.addArguments("window-size=1200x600");
+
         driver = new ChromeDriver(options);
     }
 
