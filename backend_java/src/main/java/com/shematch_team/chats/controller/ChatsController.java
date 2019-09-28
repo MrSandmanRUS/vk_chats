@@ -10,6 +10,7 @@ import com.shematch_team.chats.repository.UserRepository;
 import com.shematch_team.chats.repository.UsersChatsRepository;
 import com.shematch_team.chats.service.ChatsService;
 import com.shematch_team.chats.service.UserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -74,7 +75,9 @@ public class ChatsController {
             String vkId = userRequestDto.getVkId();
             Optional<User> user = userRepository.findByVkId(vkId);
             if (!user.isPresent()) {
-                userService.translateInfo(userRequestDto);
+                //userService.translateInfo(userRequestDto);
+                userRequestDto.setInfoJson(new JSONObject(userRequestDto.getInfo()));
+//                userRequestDto.setInfoJson((JSONObject) userRequestDto.getInfo());
                 userService.save(userRequestDto);
                 chatsService.createChatsForUser(userRequestDto);
             }
@@ -91,9 +94,11 @@ public class ChatsController {
             throw new Exception("Incorrect chat id");
         }
 
-        vkBot.getChatLink(chat);
-        chatsRepository.save(chat);
-        chat = chatsRepository.findById(chatId).orElse(null);
+        if (chat.getLink() == null) {
+            vkBot.getChatLink(chat);
+            chatsRepository.save(chat);
+            chat = chatsRepository.findById(chatId).orElse(null);
+        }
 
         return ResponseEntity.ok(chat);
     }
@@ -118,8 +123,8 @@ public class ChatsController {
             }
 
             for (UsersChats usersChats : usersChatsArray) {
-                User tempUser = userRepository.findById(usersChats.getId()).orElse(null);
-                if (tempUser != null) {
+                User tempUser = userRepository.findById(usersChats.getUserId()).orElse(null);
+                if (tempUser != null && !tempUser.getVkId().equals(vkId)) {
                     users.add(tempUser);
                 }
             }
