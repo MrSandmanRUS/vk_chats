@@ -158,6 +158,22 @@ class ChatsRecommended extends React.Component {
   }
 
   /**
+   * Вызывает отрисовку загрузки ссылки
+   * @returns {*}
+   */
+  renderChatLink() {
+    if (this.state.chatLinkLoading) {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <h1>Получаем ссылку на чат</h1>
+          <h2>Это займет какое-то время...</h2>
+          <Spinner size="large" style={{ marginTop: 20 }} />
+        </div>
+      )
+    }
+  }
+
+  /**
    * Рендер приложения
    * @returns {*}
    */
