@@ -49,6 +49,7 @@ class ChatsRecommended extends React.Component {
     return {
       first_name: user.first_name,
       last_name: user.last_name,
+      avatar: user.avatar,
       born_date: user.bday,
       city: user.city,
       country: user.country,
