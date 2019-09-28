@@ -40,6 +40,21 @@ class BackendApi {
   }
 
   /**
+   * Возвращает похожих пользователей
+   * @param vk_id
+   * @param page
+   * @param offset
+   * @returns {Promise<any>}
+   */
+  getLikeUser(vk_id, page = 0, offset = -1) {
+    return new Promise((resolve, reject) => {
+      this._sendRequest(backendUrl + "/getLikeUser?vk_id=" + vk_id + "&page=" + page + "&start_id=" + offset, GET)
+        .then(users => resolve(users))
+        .catch(err => reject(err));
+    });
+  }
+
+  /**
    * Отсылает запрос и возвращает промис в виде JSON
    * @param url
    * @param method
