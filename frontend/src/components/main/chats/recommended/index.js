@@ -105,7 +105,7 @@ class ChatsRecommended extends React.Component {
             before={<Avatar src={preview} />}
             onClick={() => window.open(link)}
       >
-        <Trans>Interests</Trans>: {interest} <br /> <Link href={link} target={'_blank'}><Trans>Conversation</Trans></Link>
+        <Link href={link} target={'_blank'}>{interest}</Link>
       </Cell>
     );
   }
