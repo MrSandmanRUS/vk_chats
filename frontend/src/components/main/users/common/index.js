@@ -1,6 +1,7 @@
 import React from 'react';
 import {Avatar, Cell, Group, List, Panel, PullToRefresh, View, Spinner} from "@vkontakte/vkui";
 import userInfo from "../../../../helper/user_info";
+import backendApi from "../../../../api/backend";
 
 const COMPONENT_NAME = 'UsersCommonInterests';
 
