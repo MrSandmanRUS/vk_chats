@@ -1,6 +1,5 @@
 package com.shematch_team.chats.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
@@ -10,7 +9,6 @@ import com.shematch_team.chats.repository.UserRepository;
 import com.shematch_team.chats.repository.UsersChatsRepository;
 import com.shematch_team.chats.service.ChatsService;
 import com.shematch_team.chats.service.UserService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -21,14 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class ChatsController {
