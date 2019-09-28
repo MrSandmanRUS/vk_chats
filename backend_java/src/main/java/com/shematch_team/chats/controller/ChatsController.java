@@ -1,14 +1,14 @@
 package com.shematch_team.chats.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
+import com.shematch_team.chats.entity.UsersChats;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.shematch_team.chats.repository.UserRepository;
+import com.shematch_team.chats.repository.UsersChatsRepository;
 import com.shematch_team.chats.service.ChatsService;
 import com.shematch_team.chats.service.UserService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -19,14 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,6 +30,7 @@ public class ChatsController {
 
     private final ChatsRepository chatsRepository;
     private final UserRepository userRepository;
+    private final UsersChatsRepository usersChatsRepository;
     private final ChatsService chatsService;
     private final UserService userService;
     @Value("${config.token}")
@@ -44,11 +39,12 @@ public class ChatsController {
 
     @Autowired
     public ChatsController(ChatsRepository chatsRepository, UserRepository userRepository, ChatsService chatsService,
-                           UserService userService) {
+                           UserService userService, UsersChatsRepository usersChatsRepository) {
         this.chatsRepository = chatsRepository;
         this.userRepository = userRepository;
         this.chatsService = chatsService;
         this.userService = userService;
+        this.usersChatsRepository = usersChatsRepository;
     }
 
     @GetMapping("getAll")
@@ -79,6 +75,42 @@ public class ChatsController {
         }
         return ResponseEntity.ok(getRecommendedChats(userRequestDto));
     }
+
+
+    @GetMapping("getLikeUser")
+    public ResponseEntity<Set<User>> getLikeUser(@RequestParam("vk_id") String vkId,
+                                                 @RequestParam("start_id") Long startId,
+                                                 @RequestParam("page") Integer page) throws Exception {
+        Optional<User> user = userRepository.findByVkId(vkId);
+        HashSet<User> users = new HashSet<>();
+
+        if (user.isPresent()) {
+            User curUser = user.orElse(null);
+
+            PageRequest pageable = new PageRequest(page, 20);
+
+            List<UsersChats> usersChatsArray;
+            if (startId == -1) {
+                usersChatsArray = usersChatsRepository.findAllByUserIdOrderById(curUser.getId(), pageable);
+            } else {
+                usersChatsArray = usersChatsRepository.findAllByUserIdAndIdLessThanEqualOrderById(curUser.getId(), startId, pageable);
+            }
+
+            for (UsersChats usersChats : usersChatsArray) {
+                User tempUser = userRepository.findById(usersChats.getId()).orElse(null);
+                if (tempUser != null) {
+                    users.add(tempUser);
+                }
+            }
+
+
+        } else {
+            throw new Exception("User doesn't exist");
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
 
     private Set<Chat> getRecommendedChats(UserRequestDto userRequestDto) {
         String vkId = userRequestDto.getVkId();

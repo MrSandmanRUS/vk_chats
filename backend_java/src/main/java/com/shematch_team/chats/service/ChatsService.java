@@ -1,13 +1,15 @@
 package com.shematch_team.chats.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.shematch_team.chats.component.VkBot;
+import com.shematch_team.chats.component.PhotoSearch;
 import com.shematch_team.chats.dto.UserRequestDto;
 import com.shematch_team.chats.entity.Chat;
 import com.shematch_team.chats.entity.User;
 import com.shematch_team.chats.repository.ChatsRepository;
 import com.shematch_team.chats.repository.UserRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -28,13 +32,15 @@ public class ChatsService {
     private final ObjectMapper om = new ObjectMapper();
 
     private final ChatsRepository chatsRepository;
-    private final VkBot vkBot;
+
+    private final PhotoSearch photoSearch;
+
 
     @Autowired
-    public ChatsService(UserRepository userRepository, ChatsRepository chatsRepository, VkBot vkBot) {
+    public ChatsService(UserRepository userRepository, ChatsRepository chatsRepository, PhotoSearch photoSearch) {
         this.userRepository = userRepository;
         this.chatsRepository = chatsRepository;
-        this.vkBot = vkBot;
+        this.photoSearch = photoSearch;
     }
 
     private Chat createOrFindChat(String interest) throws Exception {
@@ -42,7 +48,7 @@ public class ChatsService {
         if (chat == null) {
             chat = new Chat();
             chat.setInterest(interest.toLowerCase());
-            vkBot.createChat(chat);
+            chat.setPreview(photoSearch.findImageByName(interest.toLowerCase()));
             chatsRepository.save(chat);
             chat = chatsRepository.findFirstByInterest(interest.toLowerCase());
         }
