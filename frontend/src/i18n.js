@@ -12,7 +12,8 @@ const resources = {
       "Init": "Инициализация приложения",
       "Recommended Chat Title" : "Рекомендованные",
       "All Chats Title" : "Все",
-      "User Info Title" : "Инфо"
+      "User Info Title" : "Инфо",
+      "Join" : "Присоединиться"
     }
   }
 };

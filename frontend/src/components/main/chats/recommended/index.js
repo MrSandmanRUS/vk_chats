@@ -1,8 +1,9 @@
 import React from 'react';
-import {Panel, View, PullToRefresh, Cell, Avatar, Group, List, Spinner} from "@vkontakte/vkui";
+import {Panel, View, PullToRefresh, Cell, Avatar, Group, List, Spinner, Link} from "@vkontakte/vkui";
 import backendApi from "../../../../api/backend";
 import vkApi from "../../../../api/vk_api";
 import userInfo from "../../../../helper/user_info";
+import {Trans} from "react-i18next";
 
 const COMPONENT_NAME = 'ChatsRecommended';
 
@@ -98,7 +99,12 @@ class ChatsRecommended extends React.Component {
    */
   renderChats() {
     return this.state.chats.map(({ id, interest, preview, link }, i) =>
-      <Cell key={i} before={<Avatar src={preview} />} onClick={() => window.open(link)}>Интересы: {interest}</Cell>
+      <Cell key={i}
+            before={<Avatar src={preview} />}
+            onClick={() => window.open(link)}
+      >
+        Интересы: {interest} <br /> <Link href={link} target={'_blank'}><Trans>Join</Trans></Link>
+      </Cell>
     );
   }
 

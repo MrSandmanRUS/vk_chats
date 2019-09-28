@@ -1,6 +1,7 @@
 import React from 'react';
-import {Avatar, Cell, Group, List, Panel, PullToRefresh, Spinner, View} from "@vkontakte/vkui";
+import {Avatar, Cell, Group, Link, List, Panel, PullToRefresh, Spinner, View} from "@vkontakte/vkui";
 import backendApi from "../../../../api/backend";
+import {Trans} from "react-i18next";
 
 const COMPONENT_NAME = 'ChatsAll';
 
@@ -69,7 +70,12 @@ class ChatsAll extends React.Component {
    */
   renderChats() {
     return this.state.chats.map(({ id, interest, preview, link }, i) =>
-      <Cell key={i} before={<Avatar src={preview} />} onClick={() => window.open(link)}>Интересы: {interest}</Cell>
+      <Cell key={i}
+            before={<Avatar src={preview} />}
+            onClick={() => window.open(link)}
+      >
+        Интересы: {interest} <br /> <Link href={link} target={'_blank'}><Trans>Join</Trans></Link>
+      </Cell>
     );
   }
 
