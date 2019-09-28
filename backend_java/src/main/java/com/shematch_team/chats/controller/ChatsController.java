@@ -118,8 +118,8 @@ public class ChatsController {
             }
 
             for (UsersChats usersChats : usersChatsArray) {
-                User tempUser = userRepository.findById(usersChats.getId()).orElse(null);
-                if (tempUser != null) {
+                User tempUser = userRepository.findById(usersChats.getUserId()).orElse(null);
+                if (tempUser != null && !tempUser.getVkId().equals(vkId)) {
                     users.add(tempUser);
                 }
             }
