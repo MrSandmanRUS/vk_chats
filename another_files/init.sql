@@ -49,3 +49,15 @@ insert into users_chats (user_id, chat_id) values (2,1);
 insert into users_chats (user_id, chat_id) values (3,2);
 insert into users_chats (user_id, chat_id) values (3,3);
 insert into users_chats (user_id, chat_id) values (4,3);
+
+create table translates (
+    id bigint not null auto_increment primary key,
+    created_when date,
+    english varchar(200) unique,
+    russian varchar(200),
+    usage_count bigint
+);
+
+create index russian_index on translates(russian);
+create index created_when_translates_index on translates(russian);
+
