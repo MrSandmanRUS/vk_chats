@@ -46,8 +46,8 @@ public class VkBot {
                 "scope=messages,friends,groups,wall,offline&" +
                 "response_type=code&" +
                 "v=5.101");
-        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[6]")).sendKeys("1");
-        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[7]")).sendKeys("1");
+        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[6]")).sendKeys(login);
+        webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/input[7]")).sendKeys(password);
         webDriver.findElement(By.xpath("/html/body/div/div/div/div[2]/form/div/div/button")).click();
         try {
             WebElement element = webDriver.findElement(By.xpath("/html/body/div/div/div/div[3]/div/div[1]/button[1]"));
@@ -71,6 +71,7 @@ public class VkBot {
     public String getChatLink(Chat chat) throws Exception {
         String interest = chat.getInterest();
         int chatId = messages.createChat(actor).title(interest).execute();
+        Thread.sleep(1000);
         chat.setChatVkId(chatId);
         String link = messages.getInviteLink(actor, 2000000000 + chatId).execute().getLink();
         return link;
@@ -85,13 +86,13 @@ public class VkBot {
             List<Group> groups = vkApiClient.groups().search(actor,interest).execute().getItems();
             Group group = groups.get(RandomUtils.nextInt(0, groups.size() - 1));
             Integer id = group.getId();
-            Thread.sleep(500);
+            Thread.sleep(1000);
             List<WallpostFull> wallpostFullList = vkApiClient.wall().get(actor).ownerId(-id).count(10).execute().getItems();
-            Thread.sleep(500);
+            Thread.sleep(1000);
             WallpostFull wallpostFull = wallpostFullList.get(RandomUtils.nextInt(0, wallpostFullList.size() - 1));
             String postId = "wall" + wallpostFull.getOwnerId() + "_" + wallpostFull.getId();
             vkApiClient.messages().send(actor).chatId(chat.getChatVkId()).attachment(postId);
-            Thread.sleep(500);
+            Thread.sleep(1000);
         }
     }
 }
