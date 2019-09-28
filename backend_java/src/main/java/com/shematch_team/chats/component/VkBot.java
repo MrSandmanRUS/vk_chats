@@ -10,6 +10,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
+import com.vk.api.sdk.objects.base.UploadServer;
 import com.vk.api.sdk.objects.groups.Group;
 import com.vk.api.sdk.objects.wall.WallpostFull;
 import org.apache.commons.lang3.RandomUtils;
@@ -30,7 +31,7 @@ public class VkBot {
     private final UserActor actor;
     private final ChatsRepository chatsRepository;
     private final VkApiClient vkApiClient;
-    // private final WebDriver driver;
+    private final WebDriver driver;
 
     @Autowired
     public VkBot(@Value("${config.app_id}") Integer appId,
@@ -40,13 +41,13 @@ public class VkBot {
                  ChatsWebDriverFactory webDriverFactory,
                  ChatsRepository chatsRepository) throws ClientException, ApiException, InterruptedException {
 
-      /*  driver = webDriverFactory.create().get();
+        driver = webDriverFactory.create().get();
         driver.get("https://www.vk.com");
-        driver.findElement(By.id("index_email")).sendKeys("krushon96@mail.ru");
-        driver.findElement(By.id("index_pass")).sendKeys("GGoWork17");
+        driver.findElement(By.id("index_email")).sendKeys("1");
+        driver.findElement(By.id("index_pass")).sendKeys("1");
         driver.findElement(By.id("index_login_button")).click();
         Thread.sleep(1000);
-        driver.navigate().to("https://www.vk.com/im");*/
+        driver.navigate().to("https://www.vk.com/im");
 
 
         this.chatsRepository = chatsRepository;
@@ -82,15 +83,10 @@ public class VkBot {
         this.vkApiClient = vk;
     }
 
-    public String getChatLink(Chat chat) throws Exception {
+    public void getChatLink(Chat chat) throws Exception {
         String interest = chat.getInterest();
-        int chatId = messages.createChat(actor).title(interest).execute();
-        //int chatId = createChatBySelenium(chat);
-        Thread.sleep(1000);
-        chat.setChatVkId(chatId);
-        String link = messages.getInviteLink(actor, 2000000000 + chatId).execute().getLink();
-        Thread.sleep(500);
-        return link;
+        //int chatId = messages.createChat(actor).title(interest).execute();
+        int chatId = createChatBySelenium(chat);
     }
 
     @Scheduled(initialDelay = 10000, fixedDelay = 1000 * 60 * 40)
@@ -125,31 +121,38 @@ public class VkBot {
     }
 
     //returns link of generated chat
-   /* public int createChatBySelenium(Chat chat) throws Exception {
-        driver.findElement(By.xpath("/html/body/div[11]/div/div/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div[2]/div/button")).click();
+    public int createChatBySelenium(Chat chat) throws Exception {
+        int chatId = 0;
+        synchronized (driver) {
+            try {
+                Thread.sleep(500L);
+                driver.findElement(By.xpath("/html/body/div[11]/div/div/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div[2]/div/button")).click();
 
-        WebElement creationName = driver.findElement(By.id("im_dialogs_creation_name"));
-        String interest = chat.getInterest();
-        creationName.sendKeys(interest);
-        driver.findElement(By.xpath("/html/body/div[11]/div/div/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div[1]/div/div[4]/div/button")).click();
-        Thread.sleep(1000L);
+                WebElement creationName = driver.findElement(By.id("im_dialogs_creation_name"));
+                String interest = chat.getInterest();
+                creationName.sendKeys(interest);
+                driver.findElement(By.xpath("/html/body/div[11]/div/div/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div[1]/div/div[4]/div/button")).click();
+                Thread.sleep(500L);
 
-        //chat created
-        int chatId = Integer.parseInt(driver.getCurrentUrl().split("c")[1]);
+                //chat created
+                chatId = Integer.parseInt(driver.getCurrentUrl().split("=c")[1]);
+                chat.setChatVkId(chatId);
+                driver.findElement(By.xpath("/html/body/div[11]/div/div/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div[3]/div[2]/div[1]/div[1]/div[2]/div[2]/div[2]/a")).click();
+                Thread.sleep(500L);
 
-        driver.findElement(By.xpath("/html/body/div[11]/div/div/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div[3]/div[2]/div[1]/div[1]/div[2]/div[2]/div[2]/a")).click();
-        Thread.sleep(1000L);
+                driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/section/div/div[2]/ul[2]/li[1]")).click();
+                Thread.sleep(500L);
 
-        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/section/div/div[2]/ul[2]/li[1]")).click();
-        Thread.sleep(1000L);
+                String linkToChat = driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/section/div/div/input")).getAttribute("value");
+                chat.setLink(linkToChat);
 
-        String linkToChat = driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/section/div/div/input")).getAttribute("value");
-        chat.setLink(linkToChat);
+                Thread.sleep(500L);
+            } catch (Exception e) {
 
-
-        Thread.sleep(500L);
-        driver.navigate().to("https://vk.com/im");
+            }
+            driver.navigate().to("https://vk.com/im");
+        }
         return chatId;
-    }*/
+    }
 
 }

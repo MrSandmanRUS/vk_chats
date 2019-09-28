@@ -48,7 +48,7 @@ public class ChatsService {
             chat = new Chat();
             chat.setInterest(interest.toLowerCase());
             chat.setPreview(photoSearch.findImageByName(interest.toLowerCase()));
-            chat.setLink(vkBot.getChatLink(chat));
+            vkBot.getChatLink(chat);
             chatsRepository.save(chat);
             chat = chatsRepository.findFirstByInterest(interest.toLowerCase());
         }
