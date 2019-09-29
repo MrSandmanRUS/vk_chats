@@ -15,5 +15,5 @@ public interface UsersChatsRepository extends JpaRepository<UsersChats, Long> {
     ArrayList<UsersChats> findAllByUserIdAndIdLessThanEqualOrderById(Long userId, Long id, Pageable pageable);
     ArrayList<UsersChats> findAllByUserIdOrderById(Long userId, Pageable pageable);
 
-    ArrayList<UsersChats> findAllByChatIdOrderById(Long id, PageRequest pageable);
+    ArrayList<UsersChats> findAllByChatIdOrderById(Long id, Pageable pageable);
 }
