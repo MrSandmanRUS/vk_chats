@@ -5,6 +5,8 @@ const EMITTER_NAME = 'AuthEmitter';
 const AUTH_SUCCESS = 'AuthSuccess';
 const AUTH_FAILED = 'AuthFailed';
 
+const SIGNIN_FAILED = 'SignInFailed';
+
 /**
  * События по авторизации
  */
@@ -33,6 +35,14 @@ class AuthEmitter extends EmitterProto {
   }
 
   /**
+   * Подписка на событие провального входа
+   * @param callback
+   */
+  subscribeOnSignInFailed(callback) {
+    this.on(SIGNIN_FAILED, callback);
+  }
+
+  /**
    * Посылает сообщение о том, что юзер авторизован
    */
   emitAuthSuccess() {
@@ -44,6 +54,13 @@ class AuthEmitter extends EmitterProto {
    */
   emitAuthFailed() {
     this.emit(AUTH_FAILED);
+  }
+
+  /**
+   * Посылает сообщение о том, что юзер не предоставил права
+   */
+  emitSignInFailed() {
+    this.emit(SIGNIN_FAILED);
   }
 }
 

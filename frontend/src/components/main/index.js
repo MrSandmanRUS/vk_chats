@@ -1,5 +1,16 @@
 import React from 'react';
-import {Root, View, Panel, PanelHeader, Div, Spinner} from "@vkontakte/vkui";
+import {
+  Root,
+  View,
+  Panel,
+  PanelHeader,
+  Div,
+  Spinner,
+  ModalCard,
+  FormLayout,
+  FormLayoutGroup,
+  Link, ModalRoot
+} from "@vkontakte/vkui";
 import { Trans } from 'react-i18next';
 import pageEmitter from "../emitters/pages_emitter";
 import MenuBlock from "./menu_block";
@@ -7,6 +18,7 @@ import ChatsRecommended from "./chats/recommended";
 import ChatsAll from "./chats/all";
 import UserInfo from "./user_info";
 import UsersCommonInterests from "./users/common";
+import authEmitter from "../emitters/auth_emitter";
 
 //  Страница инициализации
 export const PAGE_INIT = 'init';
@@ -31,11 +43,13 @@ class MainComponent extends React.Component {
     super(props);
 
     this.state = {
-      page : PAGE_INIT
+      page : PAGE_INIT,
+      activeModal: null
     };
 
     //  Делаем подписку на события
     pageEmitter.onPageChanged((page) => this.onPageChanged(page));
+    authEmitter.subscribeOnSignInFailed(() => this.showAuthFailedModal());
   }
 
   /**
@@ -51,6 +65,13 @@ class MainComponent extends React.Component {
 
       default: break;
     }
+  }
+
+  /**
+   * Отображает модальное окно авторизации
+   */
+  showAuthFailedModal() {
+    this.setState({activeModal: 'authFailed'});
   }
 
   /**
@@ -94,8 +115,25 @@ class MainComponent extends React.Component {
    * @returns {*}
    */
   render() {
+    const modal = (
+      <ModalRoot activeModal={this.state.modalActive}>
+        <ModalCard
+          id={'authFailed'}
+          onClose={() => this.setState({modalActive: null})}
+        >
+          <FormLayout>
+            <FormLayoutGroup>
+              <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                <h1>Авторизация провалилась</h1>
+              </div>
+            </FormLayoutGroup>
+          </FormLayout>
+        </ModalCard>
+      </ModalRoot>
+    );
+
     return (
-      <Root activeView={this.state.page}>
+      <Root activeView={this.state.page} modal={modal}>
         <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
           <Panel id={PAGE_INIT + '1'}>
             <PanelHeader><Trans>App Name</Trans></PanelHeader>

@@ -53,9 +53,8 @@ const authUserFunction = () => {
 };
 
 authEmitter.subscribeOnAuthFailed(() => {
-  console.log(tries);
   if (tries === 3) {
-    alert('Авторизация провалилась!');
+    authEmitter.emitSignInFailed();
   } else {
     tries++;
     authUserFunction();
