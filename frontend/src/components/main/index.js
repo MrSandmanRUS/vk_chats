@@ -71,7 +71,6 @@ class MainComponent extends React.Component {
    * Отображает модальное окно авторизации
    */
   showAuthFailedModal() {
-    console.log('here');
     this.setState({activeModal: 'authFailed'});
   }
 
@@ -134,8 +133,8 @@ class MainComponent extends React.Component {
     );
 
     return (
-      <Root activeView={this.state.page} modal={modal}>
-        <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
+      <Root activeView={this.state.page}>
+        <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'} modal={modal}>
           <Panel id={PAGE_INIT + '1'}>
             <PanelHeader><Trans>App Name</Trans></PanelHeader>
             <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
