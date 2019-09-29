@@ -10,6 +10,7 @@ import com.shematch_team.chats.repository.UserRepository;
 import com.shematch_team.chats.repository.UsersChatsRepository;
 import com.shematch_team.chats.service.ChatsService;
 import com.shematch_team.chats.service.UserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -74,7 +75,9 @@ public class ChatsController {
             String vkId = userRequestDto.getVkId();
             Optional<User> user = userRepository.findByVkId(vkId);
             if (!user.isPresent()) {
-                userService.translateInfo(userRequestDto);
+                //userService.translateInfo(userRequestDto);
+                userRequestDto.setInfoJson(new JSONObject(userRequestDto.getInfo()));
+//                userRequestDto.setInfoJson((JSONObject) userRequestDto.getInfo());
                 userService.save(userRequestDto);
                 chatsService.createChatsForUser(userRequestDto);
             }

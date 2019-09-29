@@ -24,7 +24,3 @@ def perform_corpus(corpus, bound=0.5):
     comb_pairs_leven = _corpus_comb_to_leven(corpus_of_comb)
     dict_pairs = _make_dict_pairs(comb_pairs_leven, bound)
     return [dict_pairs.get(key, key) for key in corpus]
-
-
-words = ['питер', 'петербург', 'moscow', 'moscowskiy', 'ball', 'lopata']
-print(perform_corpus(words))
