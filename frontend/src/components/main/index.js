@@ -140,7 +140,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
           <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_CHATS_RECOMMENDED} />
 
             <ChatsRecommended />
@@ -149,7 +149,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_CHATS_ALL} activePanel={PAGE_CHATS_ALL + '1'}>
           <Panel id={PAGE_CHATS_ALL + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_CHATS_ALL} />
 
             <ChatsAll />
@@ -158,7 +158,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_USER_INFO} activePanel={PAGE_USER_INFO + '1'}>
           <Panel id={PAGE_USER_INFO + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_USER_INFO} />
 
             <UserInfo />
@@ -167,7 +167,7 @@ class MainComponent extends React.Component {
 
         <View id={PAGE_USERS_COMMON} activePanel={PAGE_USERS_COMMON + '1'}>
           <Panel id={PAGE_USERS_COMMON + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={PAGE_USERS_COMMON} />
 
             <UsersCommonInterests />
