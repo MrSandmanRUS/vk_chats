@@ -163,7 +163,7 @@ class MainComponent extends React.Component {
             { this.renderLoading() }
           </Panel>
         </View>
-        <View id={ROOT_VIEW_PAGE} activePanel={ROOT_VIEW_PAGE + '1'} onSwipeBack={() => alert('gere')}>
+        <View id={ROOT_VIEW_PAGE} activePanel={ROOT_VIEW_PAGE + '1'}>
           <Panel id={ROOT_VIEW_PAGE + '1'}>
             <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={this.state.page} />
