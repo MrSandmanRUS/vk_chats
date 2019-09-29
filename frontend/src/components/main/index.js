@@ -71,6 +71,7 @@ class MainComponent extends React.Component {
    * Отображает модальное окно авторизации
    */
   showAuthFailedModal() {
+    console.log('here');
     this.setState({activeModal: 'authFailed'});
   }
 
