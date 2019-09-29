@@ -93,11 +93,12 @@ class UserInfo extends React.Component {
           <Group title="User Info">
             <Cell
               photo={userInfo.getUser().avatar}
+              description={"Ваши интересы: " + this.state.interests}
               before={<Avatar src={userInfo.getUser().avatar} size={80}/>}
               size="l"
+              multiline
             >
-              {userInfo.getUser().first_name + ' ' + userInfo.getUser().last_name} <br />
-              {"Ваши интересы: " + this.state.interests}
+              {userInfo.getUser().first_name + ' ' + userInfo.getUser().last_name}
             </Cell>
           </Group>
         </Panel>
