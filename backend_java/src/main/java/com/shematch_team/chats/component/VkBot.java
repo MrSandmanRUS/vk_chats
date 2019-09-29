@@ -31,12 +31,13 @@ import java.util.Set;
 
 @Component
 public class VkBot {
-
+/*
     private final Messages messages;
-    private final UserActor actor;
-    private final ChatsRepository chatsRepository;
-    private final VkApiClient vkApiClient;
+    private final UserActor actor;*/
+    private final ChatsRepository chatsRepository;/*
+    private final VkApiClient vkApiClient;*/
     private final WebDriver driver;
+    private final WebDriver repostDriver;
     private final static Object monitor = new Object();
 
     private List<String> repostingComments = Arrays.asList(
@@ -65,20 +66,31 @@ public class VkBot {
                  @Value("${config.client_secret}") String clientSecret,
                  @Value("${config.vk.bot.login}") String login,
                  @Value("${config.vk.bot.password}") String password,
+                 @Value("${config.vk.bot.repost.login}") String repostLogin,
+                 @Value("${config.vk.bot.repost.password}") String repostPassword,
                  ChatsWebDriverFactory webDriverFactory,
                  ChatsRepository chatsRepository) throws ClientException, ApiException, InterruptedException {
 
         driver = webDriverFactory.create().get();
         driver.get("https://www.vk.com");
-        driver.findElement(By.id("index_email")).sendKeys("");
-        driver.findElement(By.id("index_pass")).sendKeys("");
+        driver.findElement(By.id("index_email")).sendKeys(login);
+        driver.findElement(By.id("index_pass")).sendKeys(password);
         driver.findElement(By.id("index_login_button")).click();
         Thread.sleep(1000);
         driver.navigate().to("https://www.vk.com/im");
 
 
+        repostDriver = webDriverFactory.create().get();
+        repostDriver.get("https://www.vk.com");
+        repostDriver.findElement(By.id("index_email")).sendKeys(repostLogin);
+        repostDriver.findElement(By.id("index_pass")).sendKeys(repostPassword);
+        repostDriver.findElement(By.id("index_login_button")).click();
+        Thread.sleep(1000);
+        repostDriver.navigate().to("https://www.vk.com/im");
+
+
         this.chatsRepository = chatsRepository;
-        WebDriver webDriver = webDriverFactory.create().get();
+        /*WebDriver webDriver = webDriverFactory.create().get();
         webDriver.get("https://oauth.vk.com/authorize?client_id="
                 + appId
                 + "&display=page&" +
@@ -108,6 +120,8 @@ public class VkBot {
         actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
         messages = vk.messages();
         this.vkApiClient = vk;
+
+        */
     }
 
     public void getChatLink(Chat chat) throws Exception {
@@ -123,10 +137,7 @@ public class VkBot {
             for (Chat chat : chats) {
                 System.out.println("Репостну-ка я в чат " + chat.getInterest());
                 try {
-                    //doVkApiPosting(chat);
-                    synchronized (driver) {
-                        doPostingWithSelenium(chat);
-                    }
+                    doPostingWithSelenium(chat);
                 } catch (Exception e) {
 
                 }
@@ -146,45 +157,45 @@ public class VkBot {
         WebElement share = null;
         int random;
         while (share == null) {
-            driver.get("https://vk.com/search?c%5Bper_page%5D=40&c%5Bq%5D=" + interest + "&c%5Bsection%5D=communities");
+            repostDriver.get("https://vk.com/search?c%5Bper_page%5D=40&c%5Bq%5D=" + interest + "&c%5Bsection%5D=communities");
             Thread.sleep(2000L);
-            List<WebElement> elements = driver.findElements(By.xpath("//*[@id=\"results\"]/div"));
+            List<WebElement> elements = repostDriver.findElements(By.xpath("//*[@id=\"results\"]/div"));
             int size = elements.size();
             random = RandomUtils.nextInt(0, size - 1);
             elements.get(random).findElement(By.tagName("a")).click();
 
             Thread.sleep(2000L);
 
-            List<WebElement> posts = driver.findElements(By.xpath("//*[starts-with(@id,\"post\")]"));
+            List<WebElement> posts = repostDriver.findElements(By.xpath("//*[starts-with(@id,\"post\")]"));
             size = posts.size();
             random = RandomUtils.nextInt(0, size - 1);
             share = posts.get(random).findElement(By.className("share"));
         }
         share.click();
         Thread.sleep(1000L);
-        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]/div[3]/div[2]/div/input")).sendKeys(interest);
+        repostDriver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]/div[3]/div[2]/div/input")).sendKeys(interest);
         Thread.sleep(1000L);
-        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]/div[3]/div[2]/div/input")).sendKeys(Keys.ENTER);
+        repostDriver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]/div[3]/div[2]/div/input")).sendKeys(Keys.ENTER);
         Thread.sleep(1000L);
 
         random = RandomUtils.nextInt(0, repostingComments.size() - 1);
-        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[4]/div[2]")).sendKeys(repostingComments.get(random));
+        repostDriver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[4]/div[2]")).sendKeys(repostingComments.get(random));
         Thread.sleep(1000L);
-        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[7]/button")).click();
+        repostDriver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[7]/button")).click();
         Thread.sleep(1000L);
 
     }
 
     private void joinIfNecessary(String link) {
         try {
-            driver.get(link);
+            repostDriver.get(link);
             Thread.sleep(1000L);
-            driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[5]/button")).click();
+            repostDriver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div[2]/div/div[5]/button")).click();
             Thread.sleep(1000L);
         } catch (Exception e) {
         }
-        driver.navigate().to("https://vk.com/feed");
-    }
+        repostDriver.navigate().to("https://vk.com/feed");
+    }/*
 
     private void doVkApiPosting(Chat chat) throws Exception {
 
@@ -202,7 +213,7 @@ public class VkBot {
         vkApiClient.messages().send(actor).chatId(chat.getChatVkId()).randomId(RandomUtils.nextInt())
                 .message(repostingComent).attachment(postId).execute();
         Thread.sleep(2000);
-    }
+    }*//*
 
     private WallpostFull findPostInGroups(List<Group> groups) throws Exception {
         try {
@@ -216,7 +227,7 @@ public class VkBot {
         } catch (Exception e) {
             return findPostInGroups(groups);
         }
-    }
+    }*/
 
     //returns link of generated chat
     public int createChatBySelenium(Chat chat) throws Exception {
