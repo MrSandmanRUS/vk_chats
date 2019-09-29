@@ -77,7 +77,9 @@ class UsersCommonInterests extends React.Component {
     if (!this.state.users.length) {
       return (
         <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <h1>Не удалось найти людей со схожими интересами</h1>
+          <Cell multiline>
+            <h1>Не удалось найти людей со схожими интересами</h1>
+          </Cell>
         </div>
       );
     }
