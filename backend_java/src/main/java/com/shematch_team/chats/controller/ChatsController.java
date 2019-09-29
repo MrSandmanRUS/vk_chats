@@ -126,7 +126,7 @@ public class ChatsController {
                 Chat tempChat = chatsRepository.findById(usersChats.getChatId()).orElse(null);
 
                 if (tempChat != null) {
-                    List<UsersChats>  usersChatsArray2 = usersChatsRepository.findAllByChatIdOrderById(tempChat.getId(), pageable);
+                    List<UsersChats> usersChatsArray2 = usersChatsRepository.findAllByChatIdOrderById(tempChat.getId(), pageable);
 
                     for (UsersChats usersChats2 : usersChatsArray2) {
                         User tempUser = userRepository.findById(usersChats2.getUserId()).orElse(null);
