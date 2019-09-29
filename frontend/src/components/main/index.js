@@ -44,7 +44,7 @@ class MainComponent extends React.Component {
 
     this.state = {
       page : PAGE_INIT,
-      activeModal: null
+      authFailed: false
     };
 
     //  Делаем подписку на события
@@ -71,7 +71,7 @@ class MainComponent extends React.Component {
    * Отображает модальное окно авторизации
    */
   showAuthFailedModal() {
-    this.setState({activeModal: 'authFailed'});
+    this.setState({authFailed: true});
   }
 
   /**
@@ -111,37 +111,32 @@ class MainComponent extends React.Component {
   }
 
   /**
+   * Отрисовывает процесс загрузки
+   * @returns {*}
+   */
+  renderLoading() {
+    const display = (this.state.authFailed) ? (<h1>Авторизация провалилась</h1>) : (<Spinner size="large" style={{ marginTop: 20 }} />);
+
+    return (
+      <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
+        <Panel id={PAGE_INIT + '1'}>
+          <PanelHeader><Trans>App Name</Trans></PanelHeader>
+          <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            {display}
+          </Div>
+        </Panel>
+      </View>
+    );
+  }
+
+  /**
    * Рендер компонента
    * @returns {*}
    */
   render() {
-    const modal = (
-      <ModalRoot activeModal={this.state.modalActive}>
-        <ModalCard
-          id={'authFailed'}
-          onClose={() => this.setState({modalActive: null})}
-        >
-          <FormLayout>
-            <FormLayoutGroup>
-              <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                <h1>Авторизация провалилась</h1>
-              </div>
-            </FormLayoutGroup>
-          </FormLayout>
-        </ModalCard>
-      </ModalRoot>
-    );
-
     return (
       <Root activeView={this.state.page}>
-        <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'} modal={modal}>
-          <Panel id={PAGE_INIT + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
-            <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-              <Spinner size="large" style={{ marginTop: 20 }} />
-            </Div>
-          </Panel>
-        </View>
+        { this.renderLoading() }
 
         <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
           <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
