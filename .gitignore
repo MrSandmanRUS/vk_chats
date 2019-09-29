@@ -1,1 +1,16 @@
-.idea
+# Ignore .idea files
+.idea/
+
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.logs
+*.iml
+
+backend_java/.idea/
+backend_python/.idea/
+backend_java/backend_java/.iml
+backend_java/target/
+backend_python/ruwiki_20180420_100d.txt
