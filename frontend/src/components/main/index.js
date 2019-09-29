@@ -31,6 +31,9 @@ export const PAGE_USER_INFO = 'user_info';
 //  Страница с юзерами похожими интересами
 export const PAGE_USERS_COMMON = 'users_common';
 
+const ROOT_VIEW_LOADING = 'root_view_loading';
+const ROOT_VIEW_PAGE = 'root_view_page';
+
 /**
  * Основной компонент приложения
  */
@@ -44,11 +47,13 @@ class MainComponent extends React.Component {
 
     this.state = {
       page : PAGE_INIT,
+      rootView: ROOT_VIEW_LOADING,
       authFailed: false
     };
 
     //  Делаем подписку на события
     pageEmitter.onPageChanged((page) => this.onPageChanged(page));
+    authEmitter.subscribeOnAuth(() => this.showPages());
     authEmitter.subscribeOnSignInFailed(() => this.showAuthFailedModal());
   }
 
@@ -65,6 +70,13 @@ class MainComponent extends React.Component {
 
       default: break;
     }
+  }
+
+  /**
+   * Отображает страницы
+   */
+  showPages() {
+    this.setState({rootView: ROOT_VIEW_PAGE});
   }
 
   /**
@@ -118,15 +130,24 @@ class MainComponent extends React.Component {
     const display = (this.state.authFailed) ? (<h1>Авторизация провалилась</h1>) : (<Spinner size="large" style={{ marginTop: 20 }} />);
 
     return (
-      <View id={PAGE_INIT} activePanel={PAGE_INIT + '1'}>
-        <Panel id={PAGE_INIT + '1'}>
-          <PanelHeader><Trans>App Name</Trans></PanelHeader>
-          <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            {display}
-          </Div>
-        </Panel>
-      </View>
+      <Div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        {display}
+      </Div>
     );
+  }
+
+  /**
+   * Отрисовка страницы
+   * @returns {*}
+   */
+  renderPage() {
+    switch(this.state.page) {
+      case PAGE_CHATS_RECOMMENDED: return (<ChatsRecommended />);
+      case PAGE_CHATS_ALL: return (<ChatsAll />);
+      case PAGE_USER_INFO: return (<UserInfo />);
+      case PAGE_USERS_COMMON: return (<UsersCommonInterests />);
+      default: break;
+    }
   }
 
   /**
@@ -135,42 +156,19 @@ class MainComponent extends React.Component {
    */
   render() {
     return (
-      <Root activeView={this.state.page}>
-        { this.renderLoading() }
-
-        <View id={PAGE_CHATS_RECOMMENDED} activePanel={PAGE_CHATS_RECOMMENDED + '1'}>
-          <Panel id={PAGE_CHATS_RECOMMENDED + '1'}>
-            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
-            <MenuBlock pageId={PAGE_CHATS_RECOMMENDED} />
-
-            <ChatsRecommended />
+      <Root activeView={this.state.rootView}>
+        <View id={ROOT_VIEW_LOADING} activePanel={ROOT_VIEW_LOADING + '1'}>
+          <Panel id={ROOT_VIEW_LOADING + '1'}>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            { this.renderLoading() }
           </Panel>
         </View>
+        <View id={ROOT_VIEW_PAGE} activePanel={ROOT_VIEW_PAGE + '1'}>
+          <Panel id={ROOT_VIEW_PAGE + '1'}>
+            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <MenuBlock pageId={this.state.page} />
 
-        <View id={PAGE_CHATS_ALL} activePanel={PAGE_CHATS_ALL + '1'}>
-          <Panel id={PAGE_CHATS_ALL + '1'}>
-            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
-            <MenuBlock pageId={PAGE_CHATS_ALL} />
-
-            <ChatsAll />
-          </Panel>
-        </View>
-
-        <View id={PAGE_USER_INFO} activePanel={PAGE_USER_INFO + '1'}>
-          <Panel id={PAGE_USER_INFO + '1'}>
-            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
-            <MenuBlock pageId={PAGE_USER_INFO} />
-
-            <UserInfo />
-          </Panel>
-        </View>
-
-        <View id={PAGE_USERS_COMMON} activePanel={PAGE_USERS_COMMON + '1'}>
-          <Panel id={PAGE_USERS_COMMON + '1'}>
-            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
-            <MenuBlock pageId={PAGE_USERS_COMMON} />
-
-            <UsersCommonInterests />
+            {this.renderPage()}
           </Panel>
         </View>
       </Root>
