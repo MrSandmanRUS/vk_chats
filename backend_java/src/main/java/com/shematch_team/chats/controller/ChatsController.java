@@ -51,7 +51,7 @@ public class ChatsController {
     @GetMapping("getAll")
     public ResponseEntity<List<Chat>> getAll(@RequestParam("start_id") Long startId,
                              @RequestParam("page") Integer page) {
-        PageRequest pageable = new PageRequest(page, 20);
+        PageRequest pageable = new PageRequest(page, 200);
         List<Chat> allChats;
         if (startId == -1) {
             allChats = chatsRepository.findAllByOrderByIdDesc(pageable);
@@ -113,7 +113,7 @@ public class ChatsController {
         if (user.isPresent()) {
             User curUser = user.orElse(null);
 
-            PageRequest pageable = new PageRequest(page, 20);
+            PageRequest pageable = new PageRequest(page, 200);
 
             List<UsersChats> usersChatsArray;
             if (startId == -1) {
@@ -123,10 +123,20 @@ public class ChatsController {
             }
 
             for (UsersChats usersChats : usersChatsArray) {
-                User tempUser = userRepository.findById(usersChats.getUserId()).orElse(null);
-                if (tempUser != null && !tempUser.getVkId().equals(vkId)) {
-                    users.add(tempUser);
+                Chat tempChat = chatsRepository.findById(usersChats.getChatId()).orElse(null);
+
+                if (tempChat != null) {
+                    List<UsersChats>  usersChatsArray2 = usersChatsRepository.findAllByChatIdOrderById(tempChat.getId(), pageable);
+
+                    for (UsersChats usersChats2 : usersChatsArray2) {
+                        User tempUser = userRepository.findById(usersChats2.getUserId()).orElse(null);
+                        if (tempUser != null && !tempUser.getVkId().equals(vkId)) {
+                            users.add(tempUser);
+                        }
+                    }
                 }
+
+
             }
 
 
