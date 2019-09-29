@@ -159,13 +159,13 @@ class MainComponent extends React.Component {
       <Root activeView={this.state.rootView}>
         <View id={ROOT_VIEW_LOADING} activePanel={ROOT_VIEW_LOADING + '1'}>
           <Panel id={ROOT_VIEW_LOADING + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             { this.renderLoading() }
           </Panel>
         </View>
         <View id={ROOT_VIEW_PAGE} activePanel={ROOT_VIEW_PAGE + '1'}>
           <Panel id={ROOT_VIEW_PAGE + '1'}>
-            <PanelHeader><Trans>App Name</Trans></PanelHeader>
+            <PanelHeader noShadow={true}><Trans>App Name</Trans></PanelHeader>
             <MenuBlock pageId={this.state.page} />
 
             {this.renderPage()}
